@@ -29,10 +29,10 @@ namespace CustomerApi
         public void ConfigureServices(IServiceCollection services)
         {
             // In-memory database:
-            services.AddDbContext<ProductApiContext>(opt => opt.UseInMemoryDatabase("ProductsDb"));
+            services.AddDbContext<CustomerApiContext>(opt => opt.UseInMemoryDatabase("CustomersDb"));
 
             // Register repositories for dependency injection
-            services.AddScoped<IRepository<Product>, ProductRepository>();
+            services.AddScoped<IRepository<Customer>, CustomerRepository>();
 
             // Register database initializer for dependency injection
             services.AddTransient<IDbInitializer, DbInitializer>();
@@ -45,8 +45,8 @@ namespace CustomerApi
                 options.SwaggerDoc("v1", 
                 new Microsoft.OpenApi.Models.OpenApiInfo 
                 {
-                    Title="Product API",
-                    Description="Swagger for Product API - Microservice Mini Project",
+                    Title="Customer API",
+                    Description="Swagger for Customer API - Microservice Mini Project",
                     Version="v1"
                 });
             });
@@ -60,7 +60,7 @@ namespace CustomerApi
             {
                 // Initialize the database
                 var services = scope.ServiceProvider;
-                var dbContext = services.GetService<ProductApiContext>();
+                var dbContext = services.GetService<CustomerApiContext>();
                 var dbInitializer = services.GetService<IDbInitializer>();
                 dbInitializer.Initialize(dbContext);
             }
@@ -85,7 +85,7 @@ namespace CustomerApi
             app.UseSwagger();
             app.UseSwaggerUI(options => 
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Customer API");
             });
         }
     }

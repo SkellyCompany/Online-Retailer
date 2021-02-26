@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using ProductApi.Models;
+using CustomerApi.Models;
 
-namespace ProductApi.Data
+namespace CustomerApi.Data
 {
     public class ProductRepository : IRepository<Product>
     {
