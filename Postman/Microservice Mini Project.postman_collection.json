@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "725c442a-da7b-4090-a3ab-389014a087d8",
+		"name": "Microservice Mini Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ProductAPI",
+			"item": [
+				{
+					"name": "GET products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/products",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET products/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/products/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Wrench\",\n    \"price\": 100,\n    \"itemsInStock\": 5,\n    \"itemsReserved\": 0\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/products",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT products/1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"name\": \"Drill\",\n    \"price\": 500,\n    \"itemsInStock\": 5\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5001/products/3",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE products/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5001/products/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderAPI",
+			"item": [
+				{
+					"name": "GET orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5003/orders",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST orders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": 3,\n    \"quantity\": 1\n}\n"
+						},
+						"url": {
+							"raw": "https://localhost:5003/orders",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET orders/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5003/orders/1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5003",
+							"path": [
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CustomerAPI",
+			"item": [
+				{
+					"name": "GET customers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5004/customers",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customer/1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5004/customers/4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"customers",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST customers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Henrik\",\n    \"email\": \"henrik@o2.pl\",\n    \"phone\": \"40404040\",\n    \"billingAddress\": \"Jyllandsgade 10\",\n    \"shippingAddress\": \"Jyllandsgade 10\",\n    \"creditStanding\": 20000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5004/customers",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT customers/1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"name\": \"Prof. Henrik\",\n    \"email\": \"henrik@tlen.pl\",\n    \"phone\": \"50505050\",\n    \"billingAddress\": \"Jyllandsgade 40\",\n    \"shippingAddress\": \"Jyllandsgade 40\",\n    \"creditStanding\": 30000\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5004/customers/4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"customers",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE customers/1",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:5004/customers/4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"customers",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
