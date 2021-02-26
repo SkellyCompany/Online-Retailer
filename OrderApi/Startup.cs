@@ -38,6 +38,18 @@ namespace OrderApi
             services.AddTransient<IDbInitializer, DbInitializer>();
 
             services.AddControllers();
+
+            // Swagger
+            services.AddSwaggerGen(options => 
+            {
+                options.SwaggerDoc("v1", 
+                new Microsoft.OpenApi.Models.OpenApiInfo 
+                {
+                    Title="Order API",
+                    Description="Swagger for Order API - Microservice Mini Project",
+                    Version="v1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +79,13 @@ namespace OrderApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            // Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(options => 
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Order API");
             });
         }
     }
