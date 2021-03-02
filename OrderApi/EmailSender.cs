@@ -17,7 +17,7 @@ namespace OrderApi
 				mailMessage.Subject = "Order has shipped - SKELLY";
 				mailMessage.Body = "Thank you for your purchase, your order has been shipped.";
 				SmtpServer.Port = 587;
-				SmtpServer.Credentials = new NetworkCredential("skellycompany@gmail.com", "SKELLYskelly99");
+				SmtpServer.Credentials = new NetworkCredential("skellycompany@gmail.com", "pw-here");
 				SmtpServer.EnableSsl = true;
 				SmtpServer.Send(mailMessage);
 			}
