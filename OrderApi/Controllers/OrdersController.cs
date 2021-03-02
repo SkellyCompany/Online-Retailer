@@ -66,6 +66,9 @@ namespace OrderApi.Controllers
 
                 if (updateResponse.IsSuccessful)
                 {
+                    // Example of using the email sender class
+                    //EmailSender.SendTo(customer.Email);
+
                     var newOrder = repository.Add(order);
                     return CreatedAtRoute("GetOrder", new { id = newOrder.Id }, newOrder);
                 }
