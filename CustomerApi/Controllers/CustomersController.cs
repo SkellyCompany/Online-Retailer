@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using CustomerApi.Data;
+﻿using CustomerApi.Data;
 using CustomerApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace CustomerApi.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     public class CustomersController : ControllerBase
     {
         private readonly IRepository<Customer> repository;
@@ -24,7 +24,7 @@ namespace CustomerApi.Controllers
         }
 
         // GET customers/5
-        [HttpGet("{id}", Name="GetCustomer")]
+        [HttpGet("{id}", Name = "GetCustomer")]
         public IActionResult Get(int id)
         {
             var item = repository.Get(id);
@@ -37,7 +37,7 @@ namespace CustomerApi.Controllers
 
         // POST customers
         [HttpPost]
-        public IActionResult Post([FromBody]Customer customer)
+        public IActionResult Post([FromBody] Customer customer)
         {
             if (customer == null)
             {
@@ -51,7 +51,7 @@ namespace CustomerApi.Controllers
 
         // PUT customer/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]Customer customer)
+        public IActionResult Put(int id, [FromBody] Customer customer)
         {
             if (customer == null || customer.Id != id)
             {
