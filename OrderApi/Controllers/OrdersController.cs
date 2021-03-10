@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi.Data;
 using OrderApi.Models;
+using OrderApi.Services;
 using RestSharp;
 
 namespace OrderApi.Controllers
@@ -11,25 +12,27 @@ namespace OrderApi.Controllers
     [Route("[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly IRepository<Order> repository;
+        private readonly IRepository<Order> _repository;
+        private readonly IEmailService _emailService;
 
-        public OrdersController(IRepository<Order> repos)
+        public OrdersController(IRepository<Order> repository, IEmailService emailService)
         {
-            repository = repos;
+            _repository = repository;
+            _emailService = emailService;
         }
 
         // GET: orders
         [HttpGet]
         public IEnumerable<Order> Get()
         {
-            return repository.GetAll();
+            return _repository.GetAll();
         }
 
         // GET orders/5
         [HttpGet("{id}", Name = "GetOrder")]
         public IActionResult Get(int id)
         {
-            var item = repository.Get(id);
+            var item = _repository.Get(id);
             if (item == null)
             {
                 return NotFound();
@@ -71,13 +74,13 @@ namespace OrderApi.Controllers
 
                         if (updateResponse.IsSuccessful)
                         {
-                            // Example of using the email sender class
-                            // EmailSender.SendTo(customer.Email);
-
-                            var newOrder = repository.Add(order);
+                            var newOrder = _repository.Add(order);
+                            _emailService.Send(customer.Email, $"Order Confirmation {newOrder.Id}", $"Order Confirmation\nOrder Id: {newOrder.Id}\nProduct: {orderedProduct.Name}\nQuantity: {newOrder.Quantity}");
                             return CreatedAtRoute("GetOrder", new { id = newOrder.Id }, newOrder);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         // Notify the client on insufficient amount of money
                         return BadRequest(new { Message = "Order rejected: Not enough money! :'(" });
                     }

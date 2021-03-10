@@ -11,8 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OrderApi.Data;
 using OrderApi.Models;
+using OrderApi.Services;
 
 namespace OrderApi
 {
@@ -31,6 +33,15 @@ namespace OrderApi
             // In-memory database:
             services.AddDbContext<OrderApiContext>(opt => opt.UseInMemoryDatabase("OrdersDb"));
 
+            // Register settings for dependency injection
+            services.Configure<EmailSettings>(Configuration.GetSection(nameof(EmailSettings)));
+
+            services.AddSingleton<IEmailSettings, EmailSettings>(sp =>
+                sp.GetRequiredService<IOptions<EmailSettings>>().Value);
+
+            // Register services for dependency injection
+            services.AddScoped<IEmailService, EmailService>();
+
             // Register repositories for dependency injection
             services.AddScoped<IRepository<Order>, OrderRepository>();
 
@@ -40,14 +51,14 @@ namespace OrderApi
             services.AddControllers();
 
             // Swagger
-            services.AddSwaggerGen(options => 
+            services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", 
-                new Microsoft.OpenApi.Models.OpenApiInfo 
+                options.SwaggerDoc("v1",
+                new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title="Order API",
-                    Description="Swagger for Order API - Microservice Mini Project",
-                    Version="v1"
+                    Title = "Order API",
+                    Description = "Swagger for Order API - Microservice Mini Project",
+                    Version = "v1"
                 });
             });
         }
@@ -83,7 +94,7 @@ namespace OrderApi
 
             // Swagger
             app.UseSwagger();
-            app.UseSwaggerUI(options => 
+            app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Order API");
             });
