@@ -50,10 +50,10 @@ namespace OrderApi.Controllers
             RestClient c = new RestClient();
             // You may need to change the port number in the BaseUrl below
             // before you can run the request.
-            c.BaseUrl = new Uri("http://customerapi/customers/");
+            c.BaseUrl = new Uri("https://localhost:5004/customers/");
             var customer = GetData<Customer>(c, Method.GET, order.CustomerId);
 
-            c.BaseUrl = new Uri("http://productapi/products/");
+            c.BaseUrl = new Uri("https://localhost:5001/products/");
             var orderedProduct = GetData<Product>(c, Method.GET, order.ProductId);
 
             if (order.Quantity <= orderedProduct.ItemsInStock - orderedProduct.ItemsReserved)
