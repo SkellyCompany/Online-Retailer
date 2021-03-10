@@ -40,14 +40,14 @@ namespace CustomerApi
             services.AddControllers();
 
             // Swagger
-            services.AddSwaggerGen(options => 
+            services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", 
-                new Microsoft.OpenApi.Models.OpenApiInfo 
+                options.SwaggerDoc("v1",
+                new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title="Product API",
-                    Description="Swagger for Product API - Microservice Mini Project",
-                    Version="v1"
+                    Title = "Product API",
+                    Description = "Swagger for Product API - Microservice Mini Project",
+                    Version = "v1"
                 });
             });
         }
@@ -70,8 +70,6 @@ namespace CustomerApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
@@ -83,7 +81,7 @@ namespace CustomerApi
 
             // Swagger
             app.UseSwagger();
-            app.UseSwaggerUI(options => 
+            app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
             });

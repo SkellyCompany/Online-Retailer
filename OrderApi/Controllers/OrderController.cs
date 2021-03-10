@@ -1,4 +1,5 @@
-﻿using System;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using OrderApi.Data;
@@ -10,26 +11,26 @@ namespace OrderApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrdersController : ControllerBase
+    public class OrderController : ControllerBase
     {
         private readonly IRepository<Order> _repository;
         private readonly IEmailService _emailService;
 
-        public OrdersController(IRepository<Order> repository, IEmailService emailService)
+        public OrderController(IRepository<Order> repository, IEmailService emailService)
         {
             _repository = repository;
             _emailService = emailService;
         }
 
-        // GET: orders
+        // Get All Orders
         [HttpGet]
         public IEnumerable<Order> Get()
         {
             return _repository.GetAll();
         }
 
-        // GET orders/5
-        [HttpGet("{id}", Name = "GetOrder")]
+        // Get Order By ID
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var item = _repository.Get(id);
@@ -40,7 +41,14 @@ namespace OrderApi.Controllers
             return new ObjectResult(item);
         }
 
-        // POST orders
+        // Get All Customer Order
+        [HttpGet("customer/{customerId}")]
+        public IEnumerable<Order> GetCustomerOrders(int customerId)
+        {
+            return _repository.GetAll().Where(order => order.CustomerId == customerId);
+        }
+
+        // Create Order
         [HttpPost]
         public IActionResult Post([FromBody] Order order)
         {
@@ -49,14 +57,14 @@ namespace OrderApi.Controllers
                 return BadRequest();
             }
 
-            // Call ProductApi to get the product ordered
             RestClient c = new RestClient();
-            // You may need to change the port number in the BaseUrl below
-            // before you can run the request.
-            c.BaseUrl = new Uri("https://localhost:5004/customers/");
+
+            // MARK: Fetching Customer from Customer API
+            c.BaseUrl = new Uri("http://localhost:5004/customer/");
             var customer = GetData<Customer>(c, Method.GET, order.CustomerId);
 
-            c.BaseUrl = new Uri("https://localhost:5001/products/");
+            // MARK: Fetching Product from Product API
+            c.BaseUrl = new Uri("http://localhost:5000/product/");
             var orderedProduct = GetData<Product>(c, Method.GET, order.ProductId);
 
             if (order.Quantity <= orderedProduct.ItemsInStock - orderedProduct.ItemsReserved)
@@ -74,6 +82,7 @@ namespace OrderApi.Controllers
 
                         if (updateResponse.IsSuccessful)
                         {
+                            order.Status = OrderStatus.PROCESSED;
                             var newOrder = _repository.Add(order);
                             _emailService.Send(customer.Email, $"Order Confirmation {newOrder.Id}", $"Order Confirmation\nOrder Id: {newOrder.Id}\nProduct: {orderedProduct.Name}\nQuantity: {newOrder.Quantity}");
                             return CreatedAtRoute("GetOrder", new { id = newOrder.Id }, newOrder);
@@ -99,6 +108,28 @@ namespace OrderApi.Controllers
 
             // If the order could not be created, "return no content".
             return NoContent();
+        }
+
+        // Update Order Status
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Order order)
+        {
+
+            if (order.Status == null)
+            {
+                return BadRequest("Invalid order status");
+            }
+
+            var modifiedOrder = _repository.Get(id);
+
+            if (modifiedOrder == null)
+            {
+                return NotFound();
+            }
+
+            modifiedOrder.Status = order.Status;
+            _repository.Edit(modifiedOrder);
+            return Ok(modifiedOrder);
         }
 
         // Use this method to make API calls

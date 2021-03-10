@@ -19,7 +19,7 @@ namespace OrderApi.Data
         {
             if (entity.Date == null)
                 entity.Date = DateTime.Now;
-            
+
             var newOrder = db.Orders.Add(entity).Entity;
             db.SaveChanges();
             return newOrder;

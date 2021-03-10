@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using CustomerApi.Data;
 using CustomerApi.Models;
@@ -7,24 +7,24 @@ namespace CustomerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IRepository<Product> repository;
 
-        public ProductsController(IRepository<Product> repos)
+        public ProductController(IRepository<Product> repos)
         {
             repository = repos;
         }
 
-        // GET products
+        // Get All Products
         [HttpGet]
         public IEnumerable<Product> Get()
         {
             return repository.GetAll();
         }
 
-        // GET products/5
-        [HttpGet("{id}", Name="GetProduct")]
+        // Get Product By ID
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var item = repository.Get(id);
@@ -35,9 +35,9 @@ namespace CustomerApi.Controllers
             return new ObjectResult(item);
         }
 
-        // POST products
+        // Create Product
         [HttpPost]
-        public IActionResult Post([FromBody]Product product)
+        public IActionResult Post([FromBody] Product product)
         {
             if (product == null)
             {
@@ -49,9 +49,9 @@ namespace CustomerApi.Controllers
             return CreatedAtRoute("GetProduct", new { id = newProduct.Id }, newProduct);
         }
 
-        // PUT products/5
+        // Update Product
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]Product product)
+        public IActionResult Put(int id, [FromBody] Product product)
         {
             if (product == null || product.Id != id)
             {
@@ -74,7 +74,7 @@ namespace CustomerApi.Controllers
             return new NoContentResult();
         }
 
-        // DELETE products/5
+        // Delete Product
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
