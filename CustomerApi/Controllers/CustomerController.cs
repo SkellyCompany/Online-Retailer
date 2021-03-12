@@ -53,11 +53,11 @@ namespace CustomerApi.Controllers
         {
             if (customer == null)
             {
-                return BadRequest("Could not create customer - customer is null");
+                return BadRequest("Could not update customer - customer is null");
             }
             else if (customer.Id != id)
             {
-                return BadRequest("Could not create customer - customer is null");
+                return BadRequest("Could not update customer - customer is null");
             }
 
             var modifiedCustomer = _repository.Get(id);

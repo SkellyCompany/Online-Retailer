@@ -114,12 +114,6 @@ namespace OrderApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Order order)
         {
-
-            if (order.Status == null)
-            {
-                return BadRequest("Invalid order status");
-            }
-
             var modifiedOrder = _repository.Get(id);
 
             if (modifiedOrder == null)
