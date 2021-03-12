@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrderApi.Models;
+using OnlineRetailer.Entities;
 
-namespace OrderApi.Data
+namespace OnlineRetailer.OrderApi.Infrastructure.Database
 {
     public class OrderApiContext : DbContext
     {

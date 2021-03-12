@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using OrderApi.Models;
 using System;
+using OnlineRetailer.Entities;
 
-namespace OrderApi.Data
+namespace OnlineRetailer.OrderApi.Infrastructure.Database
 {
     public class DbInitializer : IDbInitializer
     {

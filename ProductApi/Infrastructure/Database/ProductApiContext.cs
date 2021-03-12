@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CustomerApi.Models;
+using OnlineRetailer.Entities;
 
-namespace CustomerApi.Data
+namespace OnlineRetailer.ProductApi.Infrastructure.Database
 {
     public class ProductApiContext : DbContext
     {

@@ -1,4 +1,4 @@
-﻿namespace OrderApi.Data
+﻿namespace OnlineRetailer.OrderApi.Infrastructure.Database
 {
     public interface IDbInitializer
     {

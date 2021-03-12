@@ -2,12 +2,12 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using OrderApi.Data;
-using OrderApi.Models;
-using OrderApi.Services;
 using RestSharp;
+using OnlineRetailer.Entities;
+using OnlineRetailer.OrderApi.Services;
+using OnlineRetailer.OrderApi.Infrastructure;
 
-namespace OrderApi.Controllers
+namespace OnlineRetailer.OrderApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

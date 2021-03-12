@@ -5,13 +5,16 @@
   </PropertyGroup>
 
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'CustomerApi' " />
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2" />
-    <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.7" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Services\IEmailSettings.cs" />
+    <ProjectReference Include="..\Entities\OnlineRetailer.Entities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\Database\" />
   </ItemGroup>
 </Project>

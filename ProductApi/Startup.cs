@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using CustomerApi.Data;
-using CustomerApi.Models;
+using OnlineRetailer.ProductApi.Infrastructure.Database;
+using OnlineRetailer.ProductApi.Infrastructure;
+using OnlineRetailer.Entities;
 
-namespace CustomerApi
+namespace OnlineRetailer.ProductApi
 {
     public class Startup
     {

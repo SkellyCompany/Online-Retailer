@@ -1,5 +1,4 @@
-﻿using System;
-namespace OrderApi.Models
+﻿namespace OnlineRetailer.Entities
 {
     public class Product
     {

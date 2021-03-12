@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CustomerApi.Data
+namespace OnlineRetailer.OrderApi.Infrastructure
 {
     public interface IRepository<T>
     {

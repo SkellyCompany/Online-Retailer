@@ -13,9 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using OrderApi.Data;
-using OrderApi.Models;
-using OrderApi.Services;
+using OnlineRetailer.Entities;
+using OnlineRetailer.OrderApi.Infrastructure;
+using OnlineRetailer.OrderApi.Infrastructure.Database;
+using OnlineRetailer.OrderApi.Services;
 
 namespace OrderApi
 {

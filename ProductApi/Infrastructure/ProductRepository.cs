@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using CustomerApi.Models;
+using OnlineRetailer.Entities;
+using OnlineRetailer.ProductApi.Infrastructure.Database;
 
-namespace CustomerApi.Data
+namespace OnlineRetailer.ProductApi.Infrastructure
 {
     public class ProductRepository : IRepository<Product>
     {

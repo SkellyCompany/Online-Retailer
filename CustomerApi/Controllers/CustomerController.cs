@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using CustomerApi.Data;
-using CustomerApi.Models;
+using OnlineRetailer.CustomerApi.Infrastructure;
+using OnlineRetailer.Entities;
 
-namespace CustomerApi.Controllers
+namespace OnlineRetailer.CustomerApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

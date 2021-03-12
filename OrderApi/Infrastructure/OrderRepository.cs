@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using OrderApi.Models;
 using System;
+using OnlineRetailer.OrderApi.Infrastructure.Database;
+using OnlineRetailer.Entities;
 
-namespace OrderApi.Data
+namespace OnlineRetailer.OrderApi.Infrastructure
 {
     public class OrderRepository : IRepository<Order>
     {

@@ -11,10 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using CustomerApi.Data;
-using CustomerApi.Models;
+using OnlineRetailer.CustomerApi.Infrastructure;
+using OnlineRetailer.CustomerApi.Infrastructure.Database;
+using OnlineRetailer.Entities;
 
-namespace CustomerApi
+namespace OnlineRetailer.CustomerApi
 {
     public class Startup
     {
