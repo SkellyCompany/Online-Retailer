@@ -1,6 +1,3 @@
-using System;
-using EasyNetQ;
-
 namespace OnlineRetailer.OrderApi.Services.Messaging
 {
     using System;
@@ -9,26 +6,26 @@ namespace OnlineRetailer.OrderApi.Services.Messaging
 
     public class MessagingService : IMessagingService, IDisposable
     {
-        IBus bus;
+        IBus _bus;
 
         public MessagingService(IMessagingSettings settings)
         {
-            bus = RabbitHutch.CreateBus(settings.ConnectionString);
+            _bus = RabbitHutch.CreateBus(settings.ConnectionString);
         }
 
         public void Dispose()
         {
-            bus.Dispose();
+            _bus.Dispose();
         }
 
-        public void PublishMessage(object message, string topic)
+        public void PublishMessage(string message, string topic)
         {
-            bus.PubSub.Publish(message, topic);
+            _bus.PubSub.Publish(message, topic);
         }
 
         public void Subscribe(string subscriberId, string topic, Action<object> completion)
         {
-            bus.PubSub.Subscribe<String>(subscriberId, completion, x => x.WithTopic(topic));
+            _bus.PubSub.Subscribe<string>(subscriberId, completion, x => x.WithTopic(topic));
             lock (this)
             {
                 Monitor.Wait(this);

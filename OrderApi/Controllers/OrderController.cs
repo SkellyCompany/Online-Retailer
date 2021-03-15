@@ -30,7 +30,7 @@ namespace OnlineRetailer.OrderApi.Controllers
         public IEnumerable<Order> Get()
         {
 
-            _messagingService.PublishMessage(new { message = "ass message" }, "ass");
+            _messagingService.PublishMessage("ass", "ass");
             return _repository.GetAll();
         }
 

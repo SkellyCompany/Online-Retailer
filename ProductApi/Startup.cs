@@ -15,6 +15,7 @@ using OnlineRetailer.ProductApi.Infrastructure;
 using OnlineRetailer.Entities;
 using OnlineRetailer.ProductApi.Services.Messaging;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 
 namespace OnlineRetailer.ProductApi
 {
@@ -99,10 +100,9 @@ namespace OnlineRetailer.ProductApi
 
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Subscribe("ProductApi", "ass", (result) =>
+                new MessagingService().Subscribe("assId", "ass", (result) =>
                 {
-                    Console.WriteLine("pus");
-                    Console.WriteLine("I got an ass message");
+                    Debug.WriteLine("I got an ass message");
                 });
             });
         }
