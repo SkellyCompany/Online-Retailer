@@ -1,4 +1,4 @@
-namespace OnlineRetailer.OrderApi.Services
+namespace OnlineRetailer.OrderApi.Services.Email
 {
     public interface IEmailSettings
     {

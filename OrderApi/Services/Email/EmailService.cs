@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace OnlineRetailer.OrderApi.Services
+namespace OnlineRetailer.OrderApi.Services.Email
 {
     public class EmailService : IEmailService
     {

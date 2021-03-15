@@ -9,7 +9,8 @@ using Microsoft.Extensions.Options;
 using OnlineRetailer.Entities;
 using OnlineRetailer.OrderApi.Infrastructure;
 using OnlineRetailer.OrderApi.Infrastructure.Database;
-using OnlineRetailer.OrderApi.Services;
+using OnlineRetailer.OrderApi.Services.Email;
+using OnlineRetailer.OrderApi.Services.Messaging;
 
 namespace OrderApi
 {
@@ -29,13 +30,17 @@ namespace OrderApi
             services.AddDbContext<OrderApiContext>(opt => opt.UseInMemoryDatabase("OrdersDb"));
 
             // Register settings for dependency injection
+            services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
             services.Configure<EmailSettings>(Configuration.GetSection(nameof(EmailSettings)));
 
+            services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
+                            sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
             services.AddSingleton<IEmailSettings, EmailSettings>(sp =>
                 sp.GetRequiredService<IOptions<EmailSettings>>().Value);
 
             // Register services for dependency injection
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register repositories for dependency injection
             services.AddScoped<IRepository<Order>, OrderRepository>();

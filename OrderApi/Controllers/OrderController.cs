@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using OnlineRetailer.Entities;
-using OnlineRetailer.OrderApi.Services;
 using OnlineRetailer.OrderApi.Infrastructure;
+using OnlineRetailer.OrderApi.Services.Email;
+using OnlineRetailer.OrderApi.Services.Messaging;
 
 namespace OnlineRetailer.OrderApi.Controllers
 {
@@ -15,17 +16,21 @@ namespace OnlineRetailer.OrderApi.Controllers
     {
         private readonly IRepository<Order> _repository;
         private readonly IEmailService _emailService;
+        private readonly IMessagingService _messagingService;
 
-        public OrderController(IRepository<Order> repository, IEmailService emailService)
+        public OrderController(IRepository<Order> repository, IEmailService emailService, IMessagingService messagingService)
         {
             _repository = repository;
             _emailService = emailService;
+            _messagingService = messagingService;
         }
 
         // Get All Orders
         [HttpGet]
         public IEnumerable<Order> Get()
         {
+
+            _messagingService.PublishMessage(new { message = "ass message" }, "ass");
             return _repository.GetAll();
         }
 

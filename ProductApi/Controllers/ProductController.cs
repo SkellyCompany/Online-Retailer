@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OnlineRetailer.Entities;
 using OnlineRetailer.ProductApi.Infrastructure;
+using OnlineRetailer.ProductApi.Services.Messaging;
 
 namespace OnlineRetailer.CustomerApi.Controllers
 {
@@ -11,9 +14,9 @@ namespace OnlineRetailer.CustomerApi.Controllers
     {
         private readonly IRepository<Product> repository;
 
-        public ProductController(IRepository<Product> repos)
+        public ProductController(IRepository<Product> repository, IMessagingService messagingService)
         {
-            repository = repos;
+            this.repository = repository;
         }
 
         // Get All Products

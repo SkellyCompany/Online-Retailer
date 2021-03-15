@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using OnlineRetailer.ProductApi.Infrastructure.Database;
 using OnlineRetailer.ProductApi.Infrastructure;
 using OnlineRetailer.Entities;
+using OnlineRetailer.ProductApi.Services.Messaging;
+using Microsoft.Extensions.Options;
 
 namespace OnlineRetailer.ProductApi
 {
@@ -30,6 +32,15 @@ namespace OnlineRetailer.ProductApi
         {
             // In-memory database:
             services.AddDbContext<ProductApiContext>(opt => opt.UseInMemoryDatabase("ProductsDb"));
+
+            // Register settings for dependency injection
+            services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
+
+            services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
+                            sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
+
+            // Register services for dependency injection
+            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register repositories for dependency injection
             services.AddScoped<IRepository<Product>, ProductRepository>();
@@ -84,6 +95,15 @@ namespace OnlineRetailer.ProductApi
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
+            });
+
+            Task.Factory.StartNew(() =>
+            {
+                new MessagingService().Subscribe("ProductApi", "ass", (result) =>
+                {
+                    Console.WriteLine("pus");
+                    Console.WriteLine("I got an ass message");
+                });
             });
         }
     }
