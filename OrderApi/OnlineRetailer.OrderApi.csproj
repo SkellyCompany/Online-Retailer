@@ -8,6 +8,14 @@
 
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'OrderApi' " />
+
+
+  <ItemGroup>
+    <Compile Remove="Infrastructure\Messaging\**" />
+    <Content Remove="Infrastructure\Messaging\**" />
+    <EmbeddedResource Remove="Infrastructure\Messaging\**" />
+    <None Remove="Infrastructure\Messaging\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EasyNetQ" Version="6.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
@@ -17,9 +25,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Infrastructure\Database\" />
-    <Folder Include="Infrastructure\Messaging\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj" />
     <ProjectReference Include="..\Entities\OnlineRetailer.Entities.csproj" />
   </ItemGroup>
 </Project>

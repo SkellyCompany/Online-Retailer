@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +8,9 @@ using Microsoft.Extensions.Hosting;
 using OnlineRetailer.ProductApi.Infrastructure.Database;
 using OnlineRetailer.ProductApi.Infrastructure;
 using OnlineRetailer.Entities;
-using OnlineRetailer.ProductApi.Services.Messaging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using OnlineRetailer.Messaging;
 
 namespace OnlineRetailer.ProductApi
 {
@@ -100,7 +95,7 @@ namespace OnlineRetailer.ProductApi
 
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Subscribe("assId", "ass", (result) =>
+                new MessagingService().Subscribe("ass", "ass", (result) =>
                 {
                     Debug.WriteLine("I got an ass message");
                 });
