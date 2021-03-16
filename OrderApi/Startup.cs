@@ -7,10 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using OnlineRetailer.Entities;
+using OnlineRetailer.Messaging;
 using OnlineRetailer.OrderApi.Infrastructure;
 using OnlineRetailer.OrderApi.Infrastructure.Database;
 using OnlineRetailer.OrderApi.Services.Email;
-using OnlineRetailer.OrderApi.Services.Messaging;
 
 namespace OrderApi
 {

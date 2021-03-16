@@ -6,7 +6,7 @@ using RestSharp;
 using OnlineRetailer.Entities;
 using OnlineRetailer.OrderApi.Infrastructure;
 using OnlineRetailer.OrderApi.Services.Email;
-using OnlineRetailer.OrderApi.Services.Messaging;
+using OnlineRetailer.Messaging;
 
 namespace OnlineRetailer.OrderApi.Controllers
 {
@@ -29,8 +29,7 @@ namespace OnlineRetailer.OrderApi.Controllers
         [HttpGet]
         public IEnumerable<Order> Get()
         {
-
-            _messagingService.PublishMessage(new { message = "ass message" }, "ass");
+            _messagingService.Publish("ass", "ass");
             return _repository.GetAll();
         }
 

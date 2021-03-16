@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OnlineRetailer.Entities;
+using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductApi.Infrastructure;
-using OnlineRetailer.ProductApi.Services.Messaging;
 
 namespace OnlineRetailer.CustomerApi.Controllers
 {
