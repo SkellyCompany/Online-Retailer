@@ -27,7 +27,7 @@
     <Folder Include="Infrastructure\Database\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj" />
     <ProjectReference Include="..\Entities\OnlineRetailer.Entities.csproj" />
+    <ProjectReference Include="..\OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj" />
   </ItemGroup>
 </Project>
