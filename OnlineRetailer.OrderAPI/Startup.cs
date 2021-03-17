@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OnlineRetailer.Messaging;
 using OnlineRetailer.OrderAPI.Core.ApplicationServices;
 using OnlineRetailer.OrderAPI.Core.ApplicationServices.Services;
 using OnlineRetailer.OrderAPI.Core.DomainServices;
@@ -30,6 +31,8 @@ namespace OnlineRetailer.OrderAPI
 
 			// Register services for dependency injection
 			services.AddScoped<IOrderService, OrderService>();
+			services.AddScoped<IEmailService, EmailService>();
+			services.AddScoped<IMessagingService, MessagingService>();
 
 			// Register repositories for dependency injection
 			services.AddScoped<IOrderRepository, OrderRepository>();

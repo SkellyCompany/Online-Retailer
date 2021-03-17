@@ -4,11 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices.Services;
 using OnlineRetailer.ProductAPI.Core.DomainServices;
 using OnlineRetailer.ProductAPI.Infrastructure.Database;
 using OnlineRetailer.ProductAPI.Infrastructure.Repositories;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace OnlineRetailer.ProductAPI
 {
@@ -84,6 +88,14 @@ namespace OnlineRetailer.ProductAPI
 			app.UseSwaggerUI(options =>
 			{
 				options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
+			});
+
+			Task.Factory.StartNew(() =>
+			{
+				new MessagingService().Subscribe("ass", "ass", (result) =>
+				{
+					Debug.WriteLine("I got an assy message");
+				});
 			});
 		}
 	}

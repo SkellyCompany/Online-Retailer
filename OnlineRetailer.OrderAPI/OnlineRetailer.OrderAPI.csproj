@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineRetailer.CustomerAPI\OnlineRetailer.CustomerAPI.csproj" />
+    <ProjectReference Include="..\OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj" />
     <ProjectReference Include="..\OnlineRetailer.ProductAPI\OnlineRetailer.ProductAPI.csproj" />
   </ItemGroup>
 

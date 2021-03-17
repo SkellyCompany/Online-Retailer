@@ -32,12 +32,12 @@ namespace OnlineRetailer.OrderAPI.Infrastructure.Repositories
 
 		public Order Get(int id)
 		{
-			return _orderContext.Orders.FirstOrDefault(o => o.Id == id);
+			return _orderContext.Orders.Include(o => o.OrderLines).FirstOrDefault(o => o.Id == id);
 		}
 
 		public IEnumerable<Order> GetAll()
 		{
-			return _orderContext.Orders.ToList();
+			return _orderContext.Orders.Include(o => o.OrderLines).ToList();
 		}
 
 		public void Remove(int id)

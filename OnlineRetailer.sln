@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.ProductAPI",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.OrderAPI", "OnlineRetailer.OrderAPI\OnlineRetailer.OrderAPI.csproj", "{9C867809-EDCE-4C87-A031-C40C35727DAE}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9A92F2D0-4A31-4E3D-8ED9-A84939FE1967}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.Messaging", "OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj", "{555B6E77-95CF-4A79-BC91-380FECCA2225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{9C867809-EDCE-4C87-A031-C40C35727DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C867809-EDCE-4C87-A031-C40C35727DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C867809-EDCE-4C87-A031-C40C35727DAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A92F2D0-4A31-4E3D-8ED9-A84939FE1967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A92F2D0-4A31-4E3D-8ED9-A84939FE1967}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A92F2D0-4A31-4E3D-8ED9-A84939FE1967}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A92F2D0-4A31-4E3D-8ED9-A84939FE1967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,7 +23,14 @@ namespace OnlineRetailer.OrderAPI.Infrastructure.Database
 
             List<Order> orders = new List<Order>
             {
-                new Order { Date = DateTime.Today, ProductId = 1, CustomerId = 1, Status = OrderStatus.PROCESSED, Quantity = 2 }
+                new Order
+                {
+                    Date = DateTime.Today, CustomerId = 1, Status = OrderStatus.PROCESSED,
+                        OrderLines = new List<OrderLine>
+                        {
+                            new OrderLine { ProductId = 1, Quantity = 2 }
+                        }
+                }
             };
 
             context.Orders.AddRange(orders);
