@@ -95,9 +95,9 @@ namespace OnlineRetailer.ProductApi
 
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Subscribe("ass", "ass", (result) =>
+                new MessagingService(app.ApplicationServices.GetService<IOptions<MessagingSettings>>().Value).Subscribe("ass", "ass", (result) =>
                 {
-                    Debug.WriteLine("I got an ass message");
+                    Debug.WriteLine("I got an assy message");
                 });
             });
         }
