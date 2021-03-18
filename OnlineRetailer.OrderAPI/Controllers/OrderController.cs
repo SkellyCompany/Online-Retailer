@@ -72,51 +72,70 @@ namespace OnlineRetailer.OrderAPI.Controllers
         {
             try
             {
-                return Ok(_orderService.Add(order));
+                if (order.OrderLines != null && order.OrderLines.Any())
+                {
+                    // MARK: Fetching Customer from Customer API
+                    RestClient client = new RestClient { BaseUrl = new Uri("http://localhost:5004/customer/") };
+                    var customer = GetData<Customer>(client, Method.GET, order.CustomerId);
+
+                    // MARK: Fetching Product from Product API
+                    client.BaseUrl = new Uri("http://localhost:5002/product/");
+                    var products = GetData<List<Product>>(client, Method.GET);
+
+                    var orderedProducts = products.Where(prod =>
+                    {
+                        return Array.Exists(order.OrderLines.ToArray(), line => line.ProductId == prod.Id);
+                    }).ToList();
+
+                    if (AreProductsAvailable(order, orderedProducts))
+                    {
+                        if (customer != null)
+                        {
+
+                            decimal creditStanding = CalculateCustomerCreditStanding(customer, products);
+                            decimal orderPrice = CalculateOrderPrice(order, orderedProducts);
+
+                            if ((creditStanding - orderPrice) > 0)
+                            {
+                                order.Status = OrderStatus.PROCESSED;
+                                order.Date = DateTime.Now;
+
+                                var newOrder = _orderService.Add(order);
+                                var productNames = orderedProducts.Select(prod => { return prod.Name; }).ToString();
+
+                                _emailService.Send(customer.Email, $"Order Confirmation {newOrder.Id}", $"Order Confirmation\nOrder Id: {newOrder.Id}\nProduct: {productNames}");
+                                _messagingService.Send("newOrder", order);
+                                return Ok(newOrder);
+                            }
+                            else
+                            {
+                                // Notify the client on insufficient amount of money
+                                return BadRequest(new { Message = "Order rejected: Not enough money" });
+                            }
+                        }
+                        else
+                        {
+                            // Notify the client on missing customer
+                            return BadRequest(new { Message = "Order rejected: Customer not found" });
+                        }
+                    }
+                    else
+                    {
+                        // Notify the client on lack of products
+                        return BadRequest(new { Message = "Order rejected: Not enough products" });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Order rejected: Order does not contain any products" });
+                }
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
 
-            // MARK: Fetching Customer from Customer API
-            RestClient c = new RestClient { BaseUrl = new Uri("http://localhost:5004/customer/") };
-			var customer = GetData<Customer>(c, Method.GET, order.CustomerId);
-            // MARK: Fetching Product from Product API
-            c.BaseUrl = new Uri("http://localhost:5000/product/");
-            var orderedProducts = GetProducts(c, Method.GET, order);
 
-            if (IsProductAvailable(order, orderedProducts))
-            {
-                if (customer != null)
-                {
-                    decimal creditStanding = CustomerCreditStanding(c, customer);
-                    decimal orderPrice = GetOrderPrice(order, orderedProducts);
-                    if ((creditStanding - orderPrice) > 0)
-                    {
-                        order.Status = OrderStatus.PROCESSED;
-                        var newOrder = _orderService.Add(order);
-                        var productNames = orderedProducts.Select(prod => { return prod.Name; }).ToString();
-                        _emailService.Send(customer.Email, $"Order Confirmation {newOrder.Id}", $"Order Confirmation\nOrder Id: {newOrder.Id}\nProduct: {productNames}");
-                        return Ok(newOrder);
-                    }
-                    else
-                    {
-                        // Notify the client on insufficient amount of money
-                        return BadRequest(new { Message = "Order rejected: Not enough money" });
-                    }
-                }
-                else
-                {
-                    // Notify the client on missing customer
-                    return BadRequest(new { Message = "Order rejected: Customer not found" });
-                }
-            }
-            else
-            {
-                // Notify the client on lack of products
-                return BadRequest(new { Message = "Order rejected: Not enough products" });
-            }
         }
 
         // Update Order Status
@@ -133,64 +152,84 @@ namespace OnlineRetailer.OrderAPI.Controllers
             }
         }
 
+        [HttpPut("Status/{id}")]
+        public IActionResult UpdateStatus([FromRoute] int id, [FromBody] Order order)
+        {
+            try
+            {
+                var updatedOrder = _orderService.UpdateStatus(id, order.Status);
+                if (order.Status == OrderStatus.DELIVERED)
+                {
+                    Order fullOrder = _orderService.Get(id);
+                    _messagingService.Send("deliveredOrder", fullOrder);
+                }
+                else if (order.Status == OrderStatus.CANCELLED)
+                {
+                    Order fullOrder = _orderService.Get(id);
+                    _messagingService.Send("cancelledOrder", fullOrder);
+                }
+                return Ok(updatedOrder);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         // Use this method to make API calls
-        private T GetData<T>(RestClient c, Method methodType, int id)
+        private T GetData<T>(RestClient client, Method methodType, int id)
         {
             var request = new RestRequest(id.ToString(), methodType);
-            var response = c.Execute<T>(request);
+            var response = client.Execute<T>(request);
             return response.Data;
         }
 
-        // Gets the products from the ProductApi
-        private List<Product> GetProducts(RestClient c, Method methodType, Order order)
+        private T GetData<T>(RestClient client, Method methodType)
         {
-            var ids = order.OrderLines.Select(ol => { return ol.ProductId; }).ToArray();
-
-            var responseData = new List<Product>();
-            foreach (int id in ids)
-            {
-                var request = new RestRequest(id.ToString(), methodType);
-                var response = c.Execute<Product>(request);
-                responseData.Add(response.Data);
-            }
-            return responseData;
+            var request = new RestRequest(methodType);
+            var response = client.Execute<T>(request);
+            return response.Data;
         }
 
         // Checks if all the product are available
-        private bool IsProductAvailable(Order order, List<Product> orderedProducts)
+        private bool AreProductsAvailable(Order order, List<Product> orderedProducts)
         {
             foreach (OrderLine orderLine in order.OrderLines)
             {
                 var product = orderedProducts.SingleOrDefault(prod => prod.Id == orderLine.ProductId);
-                if (orderLine.Quantity > product.ItemsInStock - product.ItemsReserved)
+                if (product == null || orderLine.Quantity > product.ItemsInStock - product.ItemsReserved)
+                {
                     return false;
+                }
             }
             return true;
         }
 
-        private decimal CustomerCreditStanding(RestClient c, Customer customer)
+        private decimal CalculateCustomerCreditStanding(Customer customer, List<Product> products)
         {
             decimal creditStanding = customer.CreditStanding;
-            var customerPurchase = _orderService.GetCustomerOrders(customer.Id).ToList();
+            var customerOrders = _orderService.GetCustomerOrders(customer.Id).ToList();
 
-            foreach (Order order in customerPurchase)
+            foreach (Order order in customerOrders)
             {
                 if (order.OrderLines != null && order.OrderLines.Any())
                 {
                     foreach (OrderLine orderLine in order.OrderLines)
                     {
-                        var product = GetData<Product>(c, Method.GET, orderLine.ProductId);
-                        var orderPrice = product.Price * orderLine.Quantity;
-                        creditStanding -= orderPrice;
+                        var product = products.Find(prod => prod.Id == orderLine.ProductId);
+                        if (product != null)
+                        {
+                            creditStanding -= product.Price * orderLine.Quantity;
+                        }
+
                     }
                 }
             }
-
             return creditStanding;
         }
 
         // Get the overall price of the order
-        private decimal GetOrderPrice(Order order, List<Product> orderedProduct)
+        private decimal CalculateOrderPrice(Order order, List<Product> orderedProduct)
         {
             decimal price = 0;
 
