@@ -137,6 +137,11 @@ namespace OnlineRetailer.OrderApi.Controllers
                     return BadRequest(new { Message = "Order cannot be canceled!" });
             }
 
+            if (order.Status == OrderStatus.IN_TRANSIT)
+            {
+                RemovedReservedItems(modifiedOrder);
+            }
+
             modifiedOrder.Status = order.Status;
             _repository.Edit(modifiedOrder);
             return Ok(modifiedOrder);
@@ -210,6 +215,17 @@ namespace OnlineRetailer.OrderApi.Controllers
             }
 
             return price;
+        }
+
+        // Remove the items reserved
+        private void RemovedReservedItems(Order order)
+        {
+            foreach (OrderLine orderLine in order.OrderLines)
+            {
+                // var product = GetProduct "somehow" using orderLine.ProductId
+                // product.itemsReserved -= orderLine.Quantity
+                // product.itemsOnStock -= orderLine.Quantity
+            }
         }
     }
 }
