@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineRetailer.ProductAPI.Entities;
-using System.Collections.Generic;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
 using System;
+using OnlineRetailer.Entities;
 
 namespace OnlineRetailer.ProductAPI.Controllers
 {

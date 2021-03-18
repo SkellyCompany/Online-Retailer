@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OnlineRetailer.OrderAPI.Entities
+namespace OnlineRetailer.Entities
 {
     public enum OrderStatus
     {

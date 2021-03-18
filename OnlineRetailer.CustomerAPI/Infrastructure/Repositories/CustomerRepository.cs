@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineRetailer.CustomerAPI.Core.DomainServices;
-using OnlineRetailer.CustomerAPI.Entities;
 using OnlineRetailer.CustomerAPI.Infrastructure.Database;
+using OnlineRetailer.Entities;
 using System.Collections.Generic;
 using System.Linq;
 

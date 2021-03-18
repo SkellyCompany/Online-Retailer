@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OnlineRetailer.Entities;
 using OnlineRetailer.ProductAPI.Core.DomainServices;
-using OnlineRetailer.ProductAPI.Entities;
 using OnlineRetailer.ProductAPI.Infrastructure.Database;
 using System.Collections.Generic;
 using System.Linq;

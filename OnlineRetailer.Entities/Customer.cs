@@ -1,4 +1,4 @@
-﻿namespace OnlineRetailer.CustomerAPI.Entities
+﻿namespace OnlineRetailer.Entities
 {
     public class Customer
     {

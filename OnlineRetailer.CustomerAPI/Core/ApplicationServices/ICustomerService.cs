@@ -1,4 +1,4 @@
-﻿using OnlineRetailer.CustomerAPI.Entities;
+﻿using OnlineRetailer.Entities;
 using System.Collections.Generic;
 
 namespace OnlineRetailer.CustomerAPI.Core.ApplicationServices

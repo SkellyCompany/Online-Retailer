@@ -1,4 +1,4 @@
-﻿namespace OnlineRetailer.OrderAPI.Entities
+﻿namespace OnlineRetailer.Entities
 {
     public class OrderLine
     {

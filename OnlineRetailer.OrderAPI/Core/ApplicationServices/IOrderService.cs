@@ -1,4 +1,4 @@
-﻿using OnlineRetailer.OrderAPI.Entities;
+﻿using OnlineRetailer.Entities;
 using System.Collections.Generic;
 
 namespace OnlineRetailer.OrderAPI.Core.ApplicationServices

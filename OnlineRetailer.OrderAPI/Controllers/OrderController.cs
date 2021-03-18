@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineRetailer.CustomerAPI.Entities;
+using OnlineRetailer.Entities;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.OrderAPI.Core.ApplicationServices;
-using OnlineRetailer.OrderAPI.Entities;
-using OnlineRetailer.ProductAPI.Entities;
 using RestSharp;
 using System;
 using System.Collections.Generic;

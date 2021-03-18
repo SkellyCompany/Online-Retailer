@@ -1,5 +1,5 @@
-﻿using OnlineRetailer.ProductAPI.Core.DomainServices;
-using OnlineRetailer.ProductAPI.Entities;
+﻿using OnlineRetailer.Entities;
+using OnlineRetailer.ProductAPI.Core.DomainServices;
 using System;
 using System.Collections.Generic;
 

@@ -1,4 +1,4 @@
-﻿using OnlineRetailer.ProductAPI.Entities;
+﻿using OnlineRetailer.Entities;
 using System.Collections.Generic;
 using System.Linq;
 

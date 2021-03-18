@@ -1,4 +1,4 @@
-﻿namespace OnlineRetailer.ProductAPI.Entities
+﻿namespace OnlineRetailer.Entities
 {
     public class Product
     {

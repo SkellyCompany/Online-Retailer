@@ -1,5 +1,5 @@
-﻿using OnlineRetailer.OrderAPI.Core.DomainServices;
-using OnlineRetailer.OrderAPI.Entities;
+﻿using OnlineRetailer.Entities;
+using OnlineRetailer.OrderAPI.Core.DomainServices;
 using System;
 using System.Collections.Generic;
 

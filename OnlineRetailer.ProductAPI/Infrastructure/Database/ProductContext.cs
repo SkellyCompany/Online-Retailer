@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineRetailer.ProductAPI.Entities;
+using OnlineRetailer.Entities;
 
 namespace OnlineRetailer.ProductAPI.Infrastructure.Database
 {
