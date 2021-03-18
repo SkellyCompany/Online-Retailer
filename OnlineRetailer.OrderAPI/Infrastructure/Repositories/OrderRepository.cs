@@ -27,6 +27,11 @@ namespace OnlineRetailer.OrderAPI.Infrastructure.Repositories
 			return _orderContext.Orders.AsNoTracking().Include(o => o.OrderLines).FirstOrDefault(o => o.Id == id);
 		}
 
+		public IEnumerable<Order> GetCustomerOrders(int id)
+		{
+			return _orderContext.Orders.AsNoTracking().Where(order => order.CustomerId == id);
+		}
+
 		public Order Add(Order order)
 		{
 			Order newOrder = _orderContext.Orders.Add(order).Entity;

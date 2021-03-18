@@ -56,18 +56,29 @@ namespace OnlineRetailer.OrderAPI.Controllers
 
         // Get All Customer Order
         [HttpGet("customer/{customerId}")]
-        public IEnumerable<Order> GetCustomerOrders(int customerId)
+        public IActionResult GetCustomerOrders(int customerId)
         {
-            return _orderService.GetAll().Where(order => order.CustomerId == customerId);
+            try
+            {
+                return Ok(_orderService.GetCustomerOrders(customerId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // Create Order
         [HttpPost]
         public IActionResult Post([FromBody] Order order)
         {
-            if (order == null)
+            try
             {
-                return BadRequest();
+                return Ok(_orderService.Add(order));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
 
             // MARK: Fetching Customer from Customer API
@@ -114,21 +125,14 @@ namespace OnlineRetailer.OrderAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Order order)
         {
-            var modifiedOrder = _orderService.Get(id);
-
-            if (modifiedOrder == null)
+            try
             {
-                return NotFound();
+                return Ok(_orderService.Edit(order));
             }
-            if (order.Status == OrderStatus.CANCELLED)
+            catch (Exception e)
             {
-                if ((int)modifiedOrder.Status > 1)
-                    return BadRequest(new { Message = "Order cannot be canceled!" });
+                return BadRequest(e.Message);
             }
-
-            modifiedOrder.Status = order.Status;
-            _orderService.Edit(modifiedOrder);
-            return Ok(modifiedOrder);
         }
 
         // Use this method to make API calls
@@ -169,7 +173,7 @@ namespace OnlineRetailer.OrderAPI.Controllers
         private decimal CustomerCreditStanding(RestClient c, Customer customer)
         {
             decimal creditStanding = customer.CreditStanding;
-            var customerPurchase = GetCustomerOrders(customer.Id).ToList();
+            var customerPurchase = _orderService.GetCustomerOrders(customer.Id).ToList();
 
             foreach (Order order in customerPurchase)
             {

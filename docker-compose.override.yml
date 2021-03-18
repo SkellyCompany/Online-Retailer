@@ -4,18 +4,23 @@ services:
   onlineretailer.customerapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5101;http://+:5001
     ports:
-      - "5001"
-
+      - "5001:5001"
+      - "5101:5101"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
   onlineretailer.orderapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5002"
-
+      - "5002:5002"
+      - "5102:5102"
 
   onlineretailer.productapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5003"
+      - "5003:5003"
+      - "5103:5103"

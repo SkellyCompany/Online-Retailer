@@ -10,6 +10,11 @@ namespace OnlineRetailer.OrderAPI.Core.ApplicationServices.Services
 		private readonly IOrderRepository _orderRepository;
 
 
+		public OrderService(IOrderRepository orderRepository)
+		{
+			_orderRepository = orderRepository;
+		}
+
 		public IEnumerable<Order> GetAll()
 		{
 			return _orderRepository.GetAll();
@@ -24,17 +29,33 @@ namespace OnlineRetailer.OrderAPI.Core.ApplicationServices.Services
 			return _orderRepository.Get(id);
 		}
 
-		public OrderService(IOrderRepository orderRepository)
+		public IEnumerable<Order> GetCustomerOrders(int id)
 		{
-			_orderRepository = orderRepository;
+			return _orderRepository.GetCustomerOrders(id);
 		}
+
 		public Order Add(Order order)
 		{
+			if (order == null)
+			{
+				throw new NullReferenceException("Order is null");
+			}
 			return _orderRepository.Add(order);
 		}
 
 		public Order Edit(Order order)
 		{
+			if (_orderRepository.Get(order.Id) == null)
+			{
+				throw new NullReferenceException($"Could not find Order with ID: {order.Id}");
+			}
+			if (order.Status == OrderStatus.CANCELLED)
+			{
+				if ((int)order.Status > 1)
+				{
+					throw new NullReferenceException($"Order cannot be canceled");
+				}
+			}
 			return _orderRepository.Edit(order);
 		}
 
