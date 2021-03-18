@@ -2,6 +2,7 @@
 using OnlineRetailer.ProductAPI.Entities;
 using System.Collections.Generic;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
+using System;
 
 namespace OnlineRetailer.ProductAPI.Controllers
 {
@@ -19,73 +20,73 @@ namespace OnlineRetailer.ProductAPI.Controllers
 
         // Get All Products
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IActionResult Get()
         {
-            return _productService.GetAll();
+			try
+			{
+                return Ok(_productService.GetAll());
+            }
+            catch (Exception e)
+			{
+
+                return BadRequest(e.Message);
+			}
         }
 
         // Get Product By ID
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = _productService.Get(id);
-            if (item == null)
+            try
             {
-                return NotFound();
+                return Ok(_productService.Get(id));
             }
-            return new ObjectResult(item);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // Create Product
         [HttpPost]
         public IActionResult Post([FromBody] Product product)
         {
-            if (product == null)
+            try
             {
-                return BadRequest();
+                return Ok(_productService.Add(product));
             }
-
-            var newProduct = _productService.Add(product);
-
-            return CreatedAtRoute("GetProduct", new { id = newProduct.Id }, newProduct);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // Update Product
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Product product)
         {
-            if (product == null || product.Id != id)
+            try
             {
-                return BadRequest();
+                return Ok(_productService.Edit(product));
             }
-
-            var modifiedProduct = _productService.Get(id);
-
-            if (modifiedProduct == null)
+            catch (Exception e)
             {
-                return NotFound();
+                return BadRequest(e.Message);
             }
-
-            modifiedProduct.Name = product.Name;
-            modifiedProduct.Price = product.Price;
-            modifiedProduct.ItemsInStock = product.ItemsInStock;
-            modifiedProduct.ItemsReserved = product.ItemsReserved;
-
-            _productService.Edit(modifiedProduct);
-            return new NoContentResult();
         }
 
         // Delete Product
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (_productService.Get(id) == null)
+            try
             {
-                return NotFound();
+                return Ok(_productService.Remove(id));
             }
-
-            _productService.Remove(id);
-            return new NoContentResult();
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

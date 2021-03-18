@@ -1,5 +1,6 @@
 ﻿using OnlineRetailer.CustomerAPI.Core.DomainServices;
 using OnlineRetailer.CustomerAPI.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace OnlineRetailer.CustomerAPI.Core.ApplicationServices.Services
@@ -14,29 +15,49 @@ namespace OnlineRetailer.CustomerAPI.Core.ApplicationServices.Services
 			_customerRepository = customerRepository;
 		}
 
-		public Customer Add(Customer customer)
-		{
-			return _customerRepository.Add(customer);
-		}
-
-		public void Edit(Customer customer)
-		{
-			_customerRepository.Edit(customer);
-		}
-
-		public Customer Get(int id)
-		{
-			return _customerRepository.Get(id);
-		}
-
 		public IEnumerable<Customer> GetAll()
 		{
 			return _customerRepository.GetAll();
 		}
 
-		public void Remove(int id)
+		public Customer Get(int id)
 		{
-			_customerRepository.Remove(id);
+			if (_customerRepository.Get(id) == null)
+			{
+				throw new NullReferenceException($"Could not find Customer with ID: {id}");
+			}
+			return _customerRepository.Get(id);
+		}
+
+		public Customer Add(Customer customer)
+		{
+			if (customer == null)
+			{
+				throw new NullReferenceException ("Customer is null");
+			}
+			return _customerRepository.Add(customer);
+		}
+
+		public Customer Edit(Customer customer)
+		{
+			if (customer == null)
+			{
+				throw new NullReferenceException("Customer is null");
+			}
+			if (_customerRepository.Get(customer.Id) == null)
+			{
+				throw new NullReferenceException($"Could not find Customer with ID: {customer.Id}");
+			}
+			return _customerRepository.Edit(customer);
+		}
+
+		public Customer Remove(int id)
+		{
+			if (_customerRepository.Get(id) == null)
+			{
+				throw new NullReferenceException($"Could not find Customer with ID: {id}");
+			}
+			return _customerRepository.Remove(id);
 		}
 	}
 }

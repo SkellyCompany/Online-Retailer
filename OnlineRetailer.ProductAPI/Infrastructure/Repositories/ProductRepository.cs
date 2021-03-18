@@ -17,6 +17,17 @@ namespace OnlineRetailer.ProductAPI.Infrastructure.Repositories
 			_productContext = context;
 		}
 
+
+		public IEnumerable<Product> GetAll()
+		{
+			return _productContext.Products.AsNoTracking().ToList();
+		}
+
+		public Product Get(int id)
+		{
+			return _productContext.Products.AsNoTracking().FirstOrDefault(p => p.Id == id);
+		}
+
 		public Product Add(Product product)
 		{
 			Product newCustomer = _productContext.Products.Add(product).Entity;
@@ -24,27 +35,19 @@ namespace OnlineRetailer.ProductAPI.Infrastructure.Repositories
 			return newCustomer;
 		}
 
-		public void Edit(Product product)
+		public Product Edit(Product product)
 		{
-			_productContext.Entry(product).State = EntityState.Modified;
+			_productContext.Attach(product).State = EntityState.Modified;
 			_productContext.SaveChanges();
+			return product;
 		}
 
-		public Product Get(int id)
-		{
-			return _productContext.Products.FirstOrDefault(p => p.Id == id);
-		}
-
-		public IEnumerable<Product> GetAll()
-		{
-			return _productContext.Products.ToList();
-		}
-
-		public void Remove(int id)
+		public Product Remove(int id)
 		{
 			Product product = _productContext.Products.FirstOrDefault(p => p.Id == id);
 			_productContext.Products.Remove(product);
 			_productContext.SaveChanges();
+			return product;
 		}
 	}
 }

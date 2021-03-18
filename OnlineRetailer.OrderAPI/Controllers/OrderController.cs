@@ -28,22 +28,30 @@ namespace OnlineRetailer.OrderAPI.Controllers
 
         // Get All Orders
         [HttpGet]
-        public IEnumerable<Order> Get()
+        public IActionResult Get()
         {
-            _messagingService.Publish("ass", "ass");
-            return _orderService.GetAll();
+            try
+            {
+                return Ok(_orderService.GetAll());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // Get Order By ID
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = _orderService.Get(id);
-            if (item == null)
+            try
             {
-                return NotFound();
+                return Ok(_orderService.Get(id));
             }
-            return new ObjectResult(item);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // Get All Customer Order

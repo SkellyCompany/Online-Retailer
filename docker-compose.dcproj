@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>9a92f2d0-4a31-4e3d-8ed9-a84939fe1967</ProjectGuid>
+    <ProjectGuid>16fe3726-3f74-461a-aa3a-eb1c17dbe076</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>onlineretailer.customerapi</DockerServiceName>
+    <DockerServiceName>onlineretailer.productapi</DockerServiceName>
+    <UserSecretsId>fbe91095-adf0-492e-a0fc-bb97ca088b79</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

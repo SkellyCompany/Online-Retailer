@@ -17,6 +17,16 @@ namespace OnlineRetailer.OrderAPI.Infrastructure.Repositories
 			_orderContext = context;
 		}
 
+		public IEnumerable<Order> GetAll()
+		{
+			return _orderContext.Orders.AsNoTracking().Include(o => o.OrderLines).ToList();
+		}
+
+		public Order Get(int id)
+		{
+			return _orderContext.Orders.AsNoTracking().Include(o => o.OrderLines).FirstOrDefault(o => o.Id == id);
+		}
+
 		public Order Add(Order order)
 		{
 			Order newOrder = _orderContext.Orders.Add(order).Entity;
@@ -24,27 +34,19 @@ namespace OnlineRetailer.OrderAPI.Infrastructure.Repositories
 			return newOrder;
 		}
 
-		public void Edit(Order order)
+		public Order Edit(Order order)
 		{
 			_orderContext.Entry(order).State = EntityState.Modified;
 			_orderContext.SaveChanges();
+			return order;
 		}
 
-		public Order Get(int id)
-		{
-			return _orderContext.Orders.Include(o => o.OrderLines).FirstOrDefault(o => o.Id == id);
-		}
-
-		public IEnumerable<Order> GetAll()
-		{
-			return _orderContext.Orders.Include(o => o.OrderLines).ToList();
-		}
-
-		public void Remove(int id)
+		public Order Remove(int id)
 		{
 			Order order = _orderContext.Orders.FirstOrDefault(o => o.Id == id);
 			_orderContext.Orders.Remove(order);
 			_orderContext.SaveChanges();
+			return order;
 		}
 	}
 }

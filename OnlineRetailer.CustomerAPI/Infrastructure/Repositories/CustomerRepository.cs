@@ -17,6 +17,16 @@ namespace OnlineRetailer.CustomerAPI.Infrastructure.Repositories
 			_customerContext = context;
 		}
 
+		public IEnumerable<Customer> GetAll()
+		{
+			return _customerContext.Customers.AsNoTracking().ToList();
+		}
+
+		public Customer Get(int id)
+		{
+			return _customerContext.Customers.AsNoTracking().FirstOrDefault(c => c.Id == id);
+		}
+
 		public Customer Add(Customer customer)
 		{
 			Customer newCustomer = _customerContext.Customers.Add(customer).Entity;
@@ -24,27 +34,19 @@ namespace OnlineRetailer.CustomerAPI.Infrastructure.Repositories
 			return newCustomer;
 		}
 
-		public void Edit(Customer customer)
+		public Customer Edit(Customer customer)
 		{
-			_customerContext.Entry(customer).State = EntityState.Modified;
+			_customerContext.Attach(customer).State = EntityState.Modified;
 			_customerContext.SaveChanges();
+			return customer;
 		}
 
-		public Customer Get(int id)
-		{
-			return _customerContext.Customers.FirstOrDefault(c => c.Id == id);
-		}
-
-		public IEnumerable<Customer> GetAll()
-		{
-			return _customerContext.Customers.ToList();
-		}
-
-		public void Remove(int id)
+		public Customer Remove(int id)
 		{
 			Customer customer = _customerContext.Customers.FirstOrDefault(c => c.Id == id);
 			_customerContext.Customers.Remove(customer);
 			_customerContext.SaveChanges();
+			return customer;
 		}
 	}
 }

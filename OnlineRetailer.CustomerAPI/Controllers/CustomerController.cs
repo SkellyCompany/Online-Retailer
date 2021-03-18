@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineRetailer.CustomerAPI.Core.ApplicationServices;
 using OnlineRetailer.CustomerAPI.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace OnlineRetailer.CustomerAPI.Controllers
@@ -19,74 +20,76 @@ namespace OnlineRetailer.CustomerAPI.Controllers
 
         // Get All Customers
         [HttpGet]
-        public IEnumerable<Customer> Get()
+        public IActionResult Get()
         {
-            return _customerService.GetAll();
+			try
+			{
+                return Ok(_customerService.GetAll());
+            }
+            catch (Exception e)
+			{
+                return BadRequest(e.Message);
+            }
         }
 
         // Get Customer By ID
         [HttpGet("{id}", Name = "GetCustomer")]
         public IActionResult Get(int id)
         {
-            var item = _customerService.Get(id);
-            if (item == null)
-            {
-                return NotFound($"Could not find Customer with ID: {id}");
+			try
+			{
+                return Ok(_customerService.Get(id));
             }
-            return Ok(item);
+            catch (Exception e)
+			{
+                return BadRequest(e.Message);
+            }
         }
 
         // Create Customer
         [HttpPost]
         public IActionResult Post([FromBody] Customer customer)
         {
-            if (customer == null)
+			try
             {
-                return BadRequest("Could not create customer - customer is null");
+                return Ok(_customerService.Add(customer));
             }
-            var newCustomer = _customerService.Add(customer);
-            return CreatedAtRoute("GetCustomer", new { id = newCustomer.Id }, newCustomer);
+			catch (Exception e)
+			{
+                return BadRequest(e.Message);
+            }
         }
 
         // Update Customer
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Customer customer)
         {
-            if (customer == null)
+            try
             {
-                return BadRequest("Could not update customer - customer is null");
+                if (id != customer.Id)
+                {
+                    return Conflict("Parameter ID does not match Country id");
+                }
+                return Ok(_customerService.Edit(customer));
             }
-            else if (customer.Id != id)
+            catch (Exception e)
             {
-                return BadRequest("Could not update customer - customer is null");
+                return BadRequest(e.Message);
             }
-
-            var modifiedCustomer = _customerService.Get(id);
-            if (modifiedCustomer == null)
-            {
-                return NotFound($"Could not find Customer with ID: {id}");
-            }
-            modifiedCustomer.Name = customer.Name;
-            modifiedCustomer.Email = customer.Email;
-            modifiedCustomer.Phone = customer.Phone;
-            modifiedCustomer.BillingAddress = customer.BillingAddress;
-            modifiedCustomer.ShippingAddress = customer.ShippingAddress;
-            modifiedCustomer.CreditStanding = customer.CreditStanding;
-
-            _customerService.Edit(modifiedCustomer);
-            return new NoContentResult();
         }
 
         // Delete Customer
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (_customerService.Get(id) == null)
+            try
             {
-                return NotFound($"Could not find Customer with ID: {id}");
+                return Ok(_customerService.Remove(id));
             }
-            _customerService.Remove(id);
-            return new NoContentResult();
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

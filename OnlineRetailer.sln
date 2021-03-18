@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.CustomerAPI", "OnlineRetailer.CustomerAPI\OnlineRetailer.CustomerAPI.csproj", "{C40580AE-7BE7-48BF-8871-8AD15558BBDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineRetailer.CustomerAPI", "OnlineRetailer.CustomerAPI\OnlineRetailer.CustomerAPI.csproj", "{C40580AE-7BE7-48BF-8871-8AD15558BBDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.ProductAPI", "OnlineRetailer.ProductAPI\OnlineRetailer.ProductAPI.csproj", "{0B295A77-92E8-429A-8FDD-A9CB88610130}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineRetailer.ProductAPI", "OnlineRetailer.ProductAPI\OnlineRetailer.ProductAPI.csproj", "{0B295A77-92E8-429A-8FDD-A9CB88610130}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.OrderAPI", "OnlineRetailer.OrderAPI\OnlineRetailer.OrderAPI.csproj", "{9C867809-EDCE-4C87-A031-C40C35727DAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineRetailer.OrderAPI", "OnlineRetailer.OrderAPI\OnlineRetailer.OrderAPI.csproj", "{9C867809-EDCE-4C87-A031-C40C35727DAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRetailer.Messaging", "OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj", "{555B6E77-95CF-4A79-BC91-380FECCA2225}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineRetailer.Messaging", "OnlineRetailer.Messaging\OnlineRetailer.Messaging.csproj", "{555B6E77-95CF-4A79-BC91-380FECCA2225}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{16FE3726-3F74-461A-AA3A-EB1C17DBE076}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{555B6E77-95CF-4A79-BC91-380FECCA2225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16FE3726-3F74-461A-AA3A-EB1C17DBE076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16FE3726-3F74-461A-AA3A-EB1C17DBE076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16FE3726-3F74-461A-AA3A-EB1C17DBE076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16FE3726-3F74-461A-AA3A-EB1C17DBE076}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

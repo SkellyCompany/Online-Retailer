@@ -8,7 +8,7 @@ namespace OnlineRetailer.OrderAPI.Core.ApplicationServices
 		IEnumerable<Order> GetAll();
 		Order Get(int id);
 		Order Add(Order order);
-		void Edit(Order order);
-		void Remove(int id);
+		Order Edit(Order order);
+		Order Remove(int id);
 	}
 }

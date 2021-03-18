@@ -8,7 +8,7 @@ namespace OnlineRetailer.ProductAPI.Core.DomainServices
 		IEnumerable<Product> GetAll();
 		Product Get(int id);
 		Product Add(Product product);
-		void Edit(Product product);
-		void Remove(int id);
+		Product Edit(Product product);
+		Product Remove(int id);
 	}
 }

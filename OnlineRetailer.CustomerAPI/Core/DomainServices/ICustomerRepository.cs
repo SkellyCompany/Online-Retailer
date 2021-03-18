@@ -8,7 +8,7 @@ namespace OnlineRetailer.CustomerAPI.Core.DomainServices
 		IEnumerable<Customer> GetAll();
 		Customer Get(int id);
 		Customer Add(Customer customer);
-		void Edit(Customer customer);
-		void Remove(int id);
+		Customer Edit(Customer customer);
+		Customer Remove(int id);
 	}
 }
