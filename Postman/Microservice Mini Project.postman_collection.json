@@ -9,38 +9,38 @@
 			"name": "ProductAPI",
 			"item": [
 				{
-					"name": "GET products",
+					"name": "Get All Products",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/products",
-							"protocol": "https",
+							"raw": "http://localhost:5002/product",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5002",
 							"path": [
-								"products"
+								"product"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "GET products/1",
+					"name": "Get Product By ID",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/products/1",
-							"protocol": "https",
+							"raw": "http://localhost:5002/product/1",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5002",
 							"path": [
-								"products",
+								"product",
 								"1"
 							]
 						}
@@ -48,7 +48,7 @@
 					"response": []
 				},
 				{
-					"name": "POST products",
+					"name": "Create Product",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -62,21 +62,21 @@
 							"raw": "{\n    \"name\": \"Wrench\",\n    \"price\": 100,\n    \"itemsInStock\": 5,\n    \"itemsReserved\": 0\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/products",
-							"protocol": "https",
+							"raw": "http://localhost:5002/product",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5002",
 							"path": [
-								"products"
+								"product"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "PUT products/1",
+					"name": "Update Product",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -87,17 +87,17 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3,\n    \"name\": \"Drill\",\n    \"price\": 500,\n    \"itemsInStock\": 5\n}"
+							"raw": "{\n    \"id\": 3,\n    \"name\": \"Dick\",\n    \"price\": 500,\n    \"itemsInStock\": 5\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5001/products/3",
-							"protocol": "https",
+							"raw": "http://localhost:5002/product/3",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5002",
 							"path": [
-								"products",
+								"product",
 								"3"
 							]
 						}
@@ -105,7 +105,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE products/1",
+					"name": "Delete Product",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -114,14 +114,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5001/products/1",
-							"protocol": "https",
+							"raw": "http://localhost:5002/product/1",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5002",
 							"path": [
-								"products",
+								"product",
 								"1"
 							]
 						}
@@ -134,26 +134,67 @@
 			"name": "OrderAPI",
 			"item": [
 				{
-					"name": "GET orders",
+					"name": "Get All Orders",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5003/orders",
-							"protocol": "https",
+							"raw": "http://localhost:5000/order",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5003",
+							"port": "5000",
 							"path": [
-								"orders"
+								"order"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "POST orders",
+					"name": "Get Order By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/order/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"order",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Customer Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/order/customer/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"order",
+								"customer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -164,37 +205,76 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"productId\": 3,\n    \"quantity\": 1\n}\n"
+							"raw": "{\n    \"customerId\": 1,\n    \"status\": 1,\n    \"orderLines\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 1\n        }\n    ]\n}\n"
 						},
 						"url": {
-							"raw": "https://localhost:5003/orders",
-							"protocol": "https",
+							"raw": "http://localhost:5000/order",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5003",
+							"port": "5000",
 							"path": [
-								"orders"
+								"order"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "GET orders/1",
+					"name": "Update Order",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3,\n    \"status\": \"DELIVERED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "https://localhost:5003/orders/1",
-							"protocol": "https",
+							"raw": "http://localhost:5000/order/1",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "5003",
+							"port": "5000",
 							"path": [
-								"orders",
+								"order",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"DELIVERED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/order/status/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"order",
+								"status",
+								"3"
 							]
 						}
 					},
@@ -206,46 +286,46 @@
 			"name": "CustomerAPI",
 			"item": [
 				{
-					"name": "GET customers",
+					"name": "Get All Customers",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5004/customers",
-							"protocol": "https",
+							"raw": "http://localhost:5004/customer",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5004",
 							"path": [
-								"customers"
+								"customer"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get customer/1",
+					"name": "Get Customer By ID",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5004/customers/4",
-							"protocol": "https",
+							"raw": "http://localhost:5004/customer/1",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5004",
 							"path": [
-								"customers",
-								"4"
+								"customer",
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "POST customers",
+					"name": "Create Customer",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -259,21 +339,21 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5004/customers",
-							"protocol": "https",
+							"raw": "http://localhost:5004/customer",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5004",
 							"path": [
-								"customers"
+								"customer"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "PUT customers/1",
+					"name": "Update Customer",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -287,14 +367,14 @@
 							"raw": "{\n    \"id\": 4,\n    \"name\": \"Prof. Henrik\",\n    \"email\": \"henrik@tlen.pl\",\n    \"phone\": \"50505050\",\n    \"billingAddress\": \"Jyllandsgade 40\",\n    \"shippingAddress\": \"Jyllandsgade 40\",\n    \"creditStanding\": 30000\n}"
 						},
 						"url": {
-							"raw": "https://localhost:5004/customers/4",
-							"protocol": "https",
+							"raw": "http://localhost:5004/customer/4",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5004",
 							"path": [
-								"customers",
+								"customer",
 								"4"
 							]
 						}
@@ -302,7 +382,7 @@
 					"response": []
 				},
 				{
-					"name": "DELETE customers/1",
+					"name": "Delete Customer",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -311,14 +391,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://localhost:5004/customers/4",
-							"protocol": "https",
+							"raw": "http://localhost:5004/customer/4",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "5004",
 							"path": [
-								"customers",
+								"customer",
 								"4"
 							]
 						}
