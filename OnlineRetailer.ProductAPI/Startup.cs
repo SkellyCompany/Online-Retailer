@@ -37,7 +37,6 @@ namespace OnlineRetailer.ProductAPI
 
             // Register services for dependency injection
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register repositories for dependency injection
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -103,95 +102,6 @@ namespace OnlineRetailer.ProductAPI
             new NewOrderReceiver().Start(app, settings);
             new DeliveredOrderReceiver().Start(app, settings);
             new CancelledOrderReceiver().Start(app, settings);
-        }
-
-        private void ObserveNewOrders(IApplicationBuilder app)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    services.GetService<IMessagingService>().Receive("newOrder", (result) =>
-                    {
-                        if (result is Order)
-                        {
-                            Order order = result as Order;
-                            var productRepository = services.GetService<IProductRepository>();
-                            foreach (OrderLine line in order.OrderLines)
-                            {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved += line.Quantity;
-                                    productRepository.Edit(product);
-                                }
-                            }
-
-                        }
-                    });
-                }
-            });
-        }
-
-        private void ObserveDeliveredOrders(IApplicationBuilder app)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    services.GetService<IMessagingService>().Receive("deliveredOrder", (result) =>
-                    {
-                        if (result is Order)
-                        {
-                            Order order = result as Order;
-
-
-                            var productRepository = services.GetService<IProductRepository>();
-                            foreach (OrderLine line in order.OrderLines)
-                            {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved -= line.Quantity;
-                                    product.ItemsInStock -= line.Quantity;
-                                    productRepository.Edit(product);
-                                }
-                            }
-                        }
-
-                    });
-                }
-            });
-        }
-
-        private void ObserveCancelledOrders(IApplicationBuilder app)
-        {
-            Task.Factory.StartNew(() =>
-            {
-                using (var scope = app.ApplicationServices.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    services.GetService<IMessagingService>().Receive("cancelledOrder", (result) =>
-                    {
-                        if (result is Order)
-                        {
-                            Order order = result as Order;
-                            var productRepository = services.GetService<IProductRepository>();
-                            foreach (OrderLine line in order.OrderLines)
-                            {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved -= line.Quantity;
-                                    productRepository.Edit(product);
-                                }
-                            }
-                        }
-                    });
-                }
-            });
         }
     }
 }
