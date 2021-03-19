@@ -5,18 +5,18 @@ services:
     image: ${DOCKER_REGISTRY-}onlineretailer
     build:
       context: .
-      dockerfile: ProductApi/Dockerfile
+      dockerfile: OnlineRetailer.ProductAPI/Dockerfile
 
   onlineretailer.orderapi:
     image: ${DOCKER_REGISTRY-}onlineretailer
     build:
       context: .
-      dockerfile: OrderApi/Dockerfile
+      dockerfile: OnlineRetailer.OrderAPI/Dockerfile
 
 
   onlineretailer.customerapi:
     image: ${DOCKER_REGISTRY-}onlineretailer
     build:
       context: .
-      dockerfile: CustomerApi/Dockerfile
+      dockerfile: OnlineRetailer.CustomerAPI/Dockerfile
 

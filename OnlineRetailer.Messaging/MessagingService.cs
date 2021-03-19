@@ -1,4 +1,4 @@
-namespace OnlineRetailer.Messaging
+﻿namespace OnlineRetailer.Messaging
 {
     using System;
     using System.Threading;
@@ -9,9 +9,9 @@ namespace OnlineRetailer.Messaging
         private readonly IBus _bus;
 
 
-        public MessagingService(IMessagingSettings settings)
+        public MessagingService()
         {
-            _bus = RabbitHutch.CreateBus(settings.ConnectionString);
+            _bus = RabbitHutch.CreateBus("host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb");
         }
 
         public void Dispose()
@@ -24,7 +24,7 @@ namespace OnlineRetailer.Messaging
             _bus.PubSub.Publish(message, topic);
         }
 
-		public void Subscribe(string subscriberId, string topic, Action<object> completion)
+        public void Subscribe(string subscriberId, string topic, Action<object> completion)
         {
             _bus.PubSub.Subscribe(subscriberId, completion, x => x.WithTopic(topic));
             lock (this)
