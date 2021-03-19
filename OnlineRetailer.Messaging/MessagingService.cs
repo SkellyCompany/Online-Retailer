@@ -19,12 +19,12 @@
             _bus.Dispose();
         }
 
-        public void Publish(object message, string topic)
+        public void Publish<T>(string topic, T message)
         {
             _bus.PubSub.Publish(message, topic);
         }
 
-        public void Subscribe(string subscriberId, string topic, Action<object> completion)
+        public void Subscribe<T>(string subscriberId, string topic, Action<T> completion)
         {
             _bus.PubSub.Subscribe(subscriberId, completion, x => x.WithTopic(topic));
             lock (this)
@@ -33,12 +33,12 @@
             }
         }
 
-        public void Send(string queue, object message)
+        public void Send<T>(string queue, T message)
         {
             _bus.SendReceive.Send(queue, message);
         }
 
-        public void Receive(string queue, Action<object> completion)
+        public void Receive<T>(string queue, Action<T> completion)
         {
             _bus.SendReceive.Receive(queue, completion);
             lock (this)

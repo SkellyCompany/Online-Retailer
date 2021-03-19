@@ -4,12 +4,12 @@ namespace OnlineRetailer.Messaging
 {
     public interface IMessagingService
     {
-        void Publish(object message, string topic);
+        void Publish<T>(string topic, T message);
 
-        void Subscribe(string subscriberId, string topic, Action<object> completion);
+        void Subscribe<T>(string subscriberId, string topic, Action<T> completion);
 
-        void Send(string queue, object message);
+        void Send<T>(string queue, T message);
 
-        void Receive(string queue, Action<object> completion);
+        void Receive<T>(string queue, Action<T> completion);
     }
 }

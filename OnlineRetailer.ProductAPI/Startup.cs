@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using OnlineRetailer.Entities;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices.Services;
@@ -13,8 +12,6 @@ using OnlineRetailer.ProductAPI.Core.DomainServices;
 using OnlineRetailer.ProductAPI.Core.Messaging.Receivers;
 using OnlineRetailer.ProductAPI.Infrastructure.Database;
 using OnlineRetailer.ProductAPI.Infrastructure.Repositories;
-using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace OnlineRetailer.ProductAPI
@@ -34,6 +31,13 @@ namespace OnlineRetailer.ProductAPI
         {
             // In-memory database:
             services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductsDb"));
+
+            // Register messaging components for dependency injection
+            services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
+
+            services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
+                sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
+            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register services for dependency injection
             services.AddScoped<IProductService, ProductService>();
@@ -93,24 +97,19 @@ namespace OnlineRetailer.ProductAPI
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
             });
 
-            ConfigureReceivers(app);
+            ConfigureSubscribers(app);
         }
 
-        private void ConfigureReceivers(IApplicationBuilder app)
+        private void ConfigureSubscribers(IApplicationBuilder app)
         {
+            // using (var services = app.ApplicationServices.CreateScope().ServiceProvider)
+            // {
+            //     services.GetService<NewOrderSubscriber>().Start();
+            // }
             MessagingSettings settings = new MessagingSettings { ConnectionString = "host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb" };
-            Task.Factory.StartNew(() =>
-            {
-                new NewOrderReceiver().Start(app, settings);
-            });
-            Task.Factory.StartNew(() =>
-            {
-                new DeliveredOrderReceiver().Start(app, settings);
-            });
-            Task.Factory.StartNew(() =>
-            {
-                new CancelledOrderReceiver().Start(app, settings);
-            });
+            new NewOrderSubscriber().Start(app, settings);
+            new DeliveredOrderSubscriber().Start(app, settings);
+            new CancelledOrderSubscriber().Start(app, settings);
         }
     }
 }
