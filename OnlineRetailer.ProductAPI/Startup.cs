@@ -99,9 +99,18 @@ namespace OnlineRetailer.ProductAPI
         private void ConfigureReceivers(IApplicationBuilder app)
         {
             MessagingSettings settings = new MessagingSettings { ConnectionString = "host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb" };
-            new NewOrderReceiver().Start(app, settings);
-            new DeliveredOrderReceiver().Start(app, settings);
-            new CancelledOrderReceiver().Start(app, settings);
+            Task.Factory.StartNew(() =>
+            {
+                new NewOrderReceiver().Start(app, settings);
+            });
+            Task.Factory.StartNew(() =>
+            {
+                new DeliveredOrderReceiver().Start(app, settings);
+            });
+            Task.Factory.StartNew(() =>
+            {
+                new CancelledOrderReceiver().Start(app, settings);
+            });
         }
     }
 }

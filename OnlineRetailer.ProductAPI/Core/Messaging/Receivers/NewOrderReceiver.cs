@@ -12,30 +12,27 @@ namespace OnlineRetailer.ProductAPI.Core.Messaging.Receivers
     {
         public void Start(IApplicationBuilder app, IMessagingSettings messagingSettings)
         {
-            Task.Factory.StartNew(() =>
+            new MessagingService(messagingSettings).Receive("newOrder", (result) =>
             {
-                new MessagingService(messagingSettings).Receive("newOrder", (result) =>
+                Console.WriteLine("KURWA");
+                using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    Console.WriteLine("KURWA");
-                    using (var scope = app.ApplicationServices.CreateScope())
+                    var services = scope.ServiceProvider;
+                    var productRepository = services.GetService<IProductRepository>();
+                    if (result is Order)
                     {
-                        var services = scope.ServiceProvider;
-                        var productRepository = services.GetService<IProductRepository>();
-                        if (result is Order)
+                        Order order = result as Order;
+                        foreach (OrderLine line in order.OrderLines)
                         {
-                            Order order = result as Order;
-                            foreach (OrderLine line in order.OrderLines)
+                            Product product = productRepository.Get(line.ProductId);
+                            if (product != null)
                             {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved += line.Quantity;
-                                    productRepository.Edit(product);
-                                }
+                                product.ItemsReserved += line.Quantity;
+                                productRepository.Edit(product);
                             }
                         }
                     }
-                });
+                }
             });
         }
     }
