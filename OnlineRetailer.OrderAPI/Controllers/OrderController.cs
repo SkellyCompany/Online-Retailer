@@ -104,7 +104,7 @@ namespace OnlineRetailer.OrderAPI.Controllers
                                 var productNames = orderedProducts.Select(prod => { return prod.Name; }).ToString();
 
                                 _emailService.Send(customer.Email, $"Order Confirmation {newOrder.Id}", $"Order Confirmation\nOrder Id: {newOrder.Id}\nProduct: {productNames}");
-                                _messagingService.Send("newOrder", order);
+                                _messagingService.Publish<Order>("newOrder", order);
                                 return Ok(newOrder);
                             }
                             else
@@ -161,12 +161,12 @@ namespace OnlineRetailer.OrderAPI.Controllers
                 if (order.Status == OrderStatus.DELIVERED)
                 {
                     Order fullOrder = _orderService.Get(id);
-                    _messagingService.Send("deliveredOrder", fullOrder);
+                    _messagingService.Publish<Order>("deliveredOrder", fullOrder);
                 }
                 else if (order.Status == OrderStatus.CANCELLED)
                 {
                     Order fullOrder = _orderService.Get(id);
-                    _messagingService.Send("cancelledOrder", fullOrder);
+                    _messagingService.Publish<Order>("cancelledOrder", fullOrder);
                 }
                 return Ok(updatedOrder);
             }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 
 namespace OnlineRetailer.ProductAPI.Core.Messaging
 {
-    public interface IReceiver
+    public interface ISubscriber
     {
         void Start(IApplicationBuilder app, IMessagingSettings messagingSettings);
     }

@@ -31,16 +31,16 @@ namespace OnlineRetailer.OrderAPI
             // In-memory database:
             services.AddDbContext<OrderContext>(opt => opt.UseInMemoryDatabase("OrdersDb"));
 
-            // Register messaging settings for dependency injection
+            // Register messaging components for dependency injection
             services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
 
             services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
                 sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
+            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register services for dependency injection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register repositories for dependency injection
             services.AddScoped<IOrderRepository, OrderRepository>();

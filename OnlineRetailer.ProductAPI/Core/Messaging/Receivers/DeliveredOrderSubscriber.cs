@@ -8,30 +8,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OnlineRetailer.ProductAPI.Core.Messaging.Receivers
 {
-    public class CancelledOrderReceiver : IReceiver
+    public class DeliveredOrderSubscriber : ISubscriber
     {
         public void Start(IApplicationBuilder app, IMessagingSettings messagingSettings)
         {
-            new MessagingService(messagingSettings).Receive("cancelledOrder", (result) =>
+            Task.Factory.StartNew(() =>
             {
-                using (var scope = app.ApplicationServices.CreateScope())
+                new MessagingService(messagingSettings).Subscribe<Order>("ProductAPI.DeliveredOrderSubscriber", "deliveredOrder", (order) =>
                 {
-                    var services = scope.ServiceProvider;
-                    var productRepository = services.GetService<IProductRepository>();
-                    if (result is Order)
+                    using (var scope = app.ApplicationServices.CreateScope())
                     {
-                        Order order = result as Order;
+                        var services = scope.ServiceProvider;
+                        var productRepository = services.GetService<IProductRepository>();
                         foreach (OrderLine line in order.OrderLines)
                         {
                             Product product = productRepository.Get(line.ProductId);
                             if (product != null)
                             {
                                 product.ItemsReserved -= line.Quantity;
+                                product.ItemsInStock -= line.Quantity;
                                 productRepository.Edit(product);
                             }
                         }
                     }
-                }
+                });
             });
         }
     }
