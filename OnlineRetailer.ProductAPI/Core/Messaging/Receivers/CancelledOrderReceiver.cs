@@ -1,27 +1,19 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using OnlineRetailer.Entities;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.DomainServices;
 
-namespace OnlineRetailer.ProductAPI.Core.MessagingReceivers.Receivers
+namespace OnlineRetailer.ProductAPI.Core.Messaging.Receivers
 {
-    public class DeliveredOrderReceiver : IDeliveredOrderReceiver
+    public class CancelledOrderReceiver : IReceiver
     {
-        private IMessagingService _messagingService;
-        private IProductRepository _productRepository;
-
-        public DeliveredOrderReceiver(IMessagingService messagingService, IProductRepository productRepository)
-        {
-            _messagingService = messagingService;
-            _productRepository = productRepository;
-        }
-
-        public void Start()
+        public void Start(IApplicationBuilder app, IMessagingSettings messagingSettings)
         {
             Task.Factory.StartNew(() =>
             {
-                _messagingService.Receive("deliveredOrder", (result) =>
+                new MessagingService(messagingSettings).Receive("cancelledOrder", (result) =>
                     {
                         if (result is Order)
                         {
@@ -32,7 +24,6 @@ namespace OnlineRetailer.ProductAPI.Core.MessagingReceivers.Receivers
                                 if (product != null)
                                 {
                                     product.ItemsReserved -= line.Quantity;
-                                    product.ItemsInStock -= line.Quantity;
                                     _productRepository.Edit(product);
                                 }
                             }

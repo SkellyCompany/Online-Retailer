@@ -1,31 +1,20 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using OnlineRetailer.Entities;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.DomainServices;
 
-namespace OnlineRetailer.ProductAPI.Core.MessagingReceivers.Receivers
+namespace OnlineRetailer.ProductAPI.Core.Messaging.Receivers
 {
-    public class NewOrderReceiver : INewOrderReceiver
+    public class DeliveredOrderReceiver : IReceiver
     {
-        private IMessagingService _messagingService;
-        private IProductRepository _productRepository;
-
-        public NewOrderReceiver(IMessagingService messagingService, IProductRepository productRepository)
-        {
-            _messagingService = messagingService;
-            _productRepository = productRepository;
-        }
-
-        public void Start()
+        public void Start(IApplicationBuilder app, IMessagingSettings messagingSettings)
         {
             Task.Factory.StartNew(() =>
             {
-
-                Console.WriteLine("dupka");
-                _messagingService.Receive("newOrder", (result) =>
+                new MessagingService(messagingSettings).Receive("deliveredOrder", (result) =>
                     {
-                        Console.WriteLine("kupka");
                         if (result is Order)
                         {
                             Order order = result as Order;
@@ -34,7 +23,8 @@ namespace OnlineRetailer.ProductAPI.Core.MessagingReceivers.Receivers
                                 Product product = _productRepository.Get(line.ProductId);
                                 if (product != null)
                                 {
-                                    product.ItemsReserved += line.Quantity;
+                                    product.ItemsReserved -= line.Quantity;
+                                    product.ItemsInStock -= line.Quantity;
                                     _productRepository.Edit(product);
                                 }
                             }

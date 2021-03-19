@@ -10,6 +10,7 @@ using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices.Services;
 using OnlineRetailer.ProductAPI.Core.DomainServices;
+using OnlineRetailer.ProductAPI.Core.Messaging.Receivers;
 using OnlineRetailer.ProductAPI.Infrastructure.Database;
 using OnlineRetailer.ProductAPI.Infrastructure.Repositories;
 using System;
@@ -33,12 +34,6 @@ namespace OnlineRetailer.ProductAPI
         {
             // In-memory database:
             services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductsDb"));
-
-            // Register messaging settings for dependency injection
-            services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
-
-            services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
-                sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
 
             // Register services for dependency injection
             services.AddScoped<IProductService, ProductService>();
@@ -99,9 +94,15 @@ namespace OnlineRetailer.ProductAPI
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
             });
 
-            ObserveNewOrders(app);
-            ObserveCancelledOrders(app);
-            ObserveDeliveredOrders(app);
+            ConfigureReceivers(app);
+        }
+
+        private void ConfigureReceivers(IApplicationBuilder app)
+        {
+            MessagingSettings settings = new MessagingSettings { ConnectionString = "host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb" };
+            new NewOrderReceiver().Start(app, settings);
+            new DeliveredOrderReceiver().Start(app, settings);
+            new CancelledOrderReceiver().Start(app, settings);
         }
 
         private void ObserveNewOrders(IApplicationBuilder app)
