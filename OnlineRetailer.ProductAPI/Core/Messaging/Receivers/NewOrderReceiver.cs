@@ -14,7 +14,6 @@ namespace OnlineRetailer.ProductAPI.Core.Messaging.Receivers
         {
             new MessagingService(messagingSettings).Receive("newOrder", (result) =>
             {
-                Console.WriteLine("KURWA");
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var services = scope.ServiceProvider;
