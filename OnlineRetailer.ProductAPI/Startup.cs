@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using OnlineRetailer.Entities;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
@@ -33,8 +34,15 @@ namespace OnlineRetailer.ProductAPI
             // In-memory database:
             services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductsDb"));
 
+            // Register messaging settings for dependency injection
+            services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
+
+            services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
+                sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
+
             // Register services for dependency injection
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IMessagingService, MessagingService>();
 
             // Register repositories for dependency injection
             services.AddScoped<IProductRepository, ProductRepository>();
@@ -100,14 +108,14 @@ namespace OnlineRetailer.ProductAPI
         {
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Receive("newOrder", (result) =>
+                using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    if (result is Order)
+                    var services = scope.ServiceProvider;
+                    services.GetService<IMessagingService>().Receive("newOrder", (result) =>
                     {
-                        Order order = result as Order;
-                        using (var scope = app.ApplicationServices.CreateScope())
+                        if (result is Order)
                         {
-                            var services = scope.ServiceProvider;
+                            Order order = result as Order;
                             var productRepository = services.GetService<IProductRepository>();
                             foreach (OrderLine line in order.OrderLines)
                             {
@@ -118,9 +126,10 @@ namespace OnlineRetailer.ProductAPI
                                     productRepository.Edit(product);
                                 }
                             }
+
                         }
-                    }
-                });
+                    });
+                }
             });
         }
 
@@ -128,14 +137,16 @@ namespace OnlineRetailer.ProductAPI
         {
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Receive("deliveredOrder", (result) =>
+                using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    if (result is Order)
+                    var services = scope.ServiceProvider;
+                    services.GetService<IMessagingService>().Receive("deliveredOrder", (result) =>
                     {
-                        Order order = result as Order;
-                        using (var scope = app.ApplicationServices.CreateScope())
+                        if (result is Order)
                         {
-                            var services = scope.ServiceProvider;
+                            Order order = result as Order;
+
+
                             var productRepository = services.GetService<IProductRepository>();
                             foreach (OrderLine line in order.OrderLines)
                             {
@@ -148,8 +159,9 @@ namespace OnlineRetailer.ProductAPI
                                 }
                             }
                         }
-                    }
-                });
+
+                    });
+                }
             });
         }
 
@@ -157,14 +169,14 @@ namespace OnlineRetailer.ProductAPI
         {
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Receive("cancelledOrder", (result) =>
+                using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    if (result is Order)
+                    var services = scope.ServiceProvider;
+                    services.GetService<IMessagingService>().Receive("cancelledOrder", (result) =>
                     {
-                        Order order = result as Order;
-                        using (var scope = app.ApplicationServices.CreateScope())
+                        if (result is Order)
                         {
-                            var services = scope.ServiceProvider;
+                            Order order = result as Order;
                             var productRepository = services.GetService<IProductRepository>();
                             foreach (OrderLine line in order.OrderLines)
                             {
@@ -176,8 +188,8 @@ namespace OnlineRetailer.ProductAPI
                                 }
                             }
                         }
-                    }
-                });
+                    });
+                }
             });
         }
     }

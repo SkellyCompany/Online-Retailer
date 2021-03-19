@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.OrderAPI.Core.ApplicationServices;
 using OnlineRetailer.OrderAPI.Core.ApplicationServices.Services;
@@ -29,6 +30,12 @@ namespace OnlineRetailer.OrderAPI
         {
             // In-memory database:
             services.AddDbContext<OrderContext>(opt => opt.UseInMemoryDatabase("OrdersDb"));
+
+            // Register messaging settings for dependency injection
+            services.Configure<MessagingSettings>(Configuration.GetSection(nameof(MessagingSettings)));
+
+            services.AddSingleton<IMessagingSettings, MessagingSettings>(sp =>
+                sp.GetRequiredService<IOptions<MessagingSettings>>().Value);
 
             // Register services for dependency injection
             services.AddScoped<IOrderService, OrderService>();
