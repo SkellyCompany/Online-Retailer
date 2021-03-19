@@ -102,14 +102,13 @@ namespace OnlineRetailer.ProductAPI
 
         private void ConfigureSubscribers(IApplicationBuilder app)
         {
-            // using (var services = app.ApplicationServices.CreateScope().ServiceProvider)
-            // {
-            //     services.GetService<NewOrderSubscriber>().Start();
-            // }
-            MessagingSettings settings = new MessagingSettings { ConnectionString = "host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb" };
-            new NewOrderSubscriber().Start(app, settings);
-            new DeliveredOrderSubscriber().Start(app, settings);
-            new CancelledOrderSubscriber().Start(app, settings);
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var settings = scope.ServiceProvider.GetService<IMessagingSettings>();
+                new NewOrderSubscriber().Start(app, settings);
+                new DeliveredOrderSubscriber().Start(app, settings);
+                new CancelledOrderSubscriber().Start(app, settings);
+            }
         }
     }
 }
