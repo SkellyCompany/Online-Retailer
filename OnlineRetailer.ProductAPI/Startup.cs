@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using OnlineRetailer.Entities;
 using OnlineRetailer.Messaging;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices;
 using OnlineRetailer.ProductAPI.Core.ApplicationServices.Services;
 using OnlineRetailer.ProductAPI.Core.DomainServices;
+using OnlineRetailer.ProductAPI.Core.Messaging.Receivers;
 using OnlineRetailer.ProductAPI.Infrastructure.Database;
 using OnlineRetailer.ProductAPI.Infrastructure.Repositories;
 using System;
@@ -91,93 +93,23 @@ namespace OnlineRetailer.ProductAPI
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Product API");
             });
 
-            ObserveNewOrders(app);
-            ObserveCancelledOrders(app);
-            ObserveDeliveredOrders(app);
+            ConfigureReceivers(app);
         }
 
-        private void ObserveNewOrders(IApplicationBuilder app)
+        private void ConfigureReceivers(IApplicationBuilder app)
         {
+            MessagingSettings settings = new MessagingSettings { ConnectionString = "host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb" };
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Receive("newOrder", (result) =>
-                {
-                    if (result is Order)
-                    {
-                        Order order = result as Order;
-                        using (var scope = app.ApplicationServices.CreateScope())
-                        {
-                            var services = scope.ServiceProvider;
-                            var productRepository = services.GetService<IProductRepository>();
-                            foreach (OrderLine line in order.OrderLines)
-                            {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved += line.Quantity;
-                                    productRepository.Edit(product);
-                                }
-                            }
-                        }
-                    }
-                });
+                new NewOrderReceiver().Start(app, settings);
             });
-        }
-
-        private void ObserveDeliveredOrders(IApplicationBuilder app)
-        {
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Receive("deliveredOrder", (result) =>
-                {
-                    if (result is Order)
-                    {
-                        Order order = result as Order;
-                        using (var scope = app.ApplicationServices.CreateScope())
-                        {
-                            var services = scope.ServiceProvider;
-                            var productRepository = services.GetService<IProductRepository>();
-                            foreach (OrderLine line in order.OrderLines)
-                            {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved -= line.Quantity;
-                                    product.ItemsInStock -= line.Quantity;
-                                    productRepository.Edit(product);
-                                }
-                            }
-                        }
-                    }
-                });
+                new DeliveredOrderReceiver().Start(app, settings);
             });
-        }
-
-        private void ObserveCancelledOrders(IApplicationBuilder app)
-        {
             Task.Factory.StartNew(() =>
             {
-                new MessagingService().Receive("cancelledOrder", (result) =>
-                {
-                    if (result is Order)
-                    {
-                        Order order = result as Order;
-                        using (var scope = app.ApplicationServices.CreateScope())
-                        {
-                            var services = scope.ServiceProvider;
-                            var productRepository = services.GetService<IProductRepository>();
-                            foreach (OrderLine line in order.OrderLines)
-                            {
-                                Product product = productRepository.Get(line.ProductId);
-                                if (product != null)
-                                {
-                                    product.ItemsReserved -= line.Quantity;
-                                    productRepository.Edit(product);
-                                }
-                            }
-                        }
-                    }
-                });
+                new CancelledOrderReceiver().Start(app, settings);
             });
         }
     }

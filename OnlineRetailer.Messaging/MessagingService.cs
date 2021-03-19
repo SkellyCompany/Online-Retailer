@@ -9,9 +9,9 @@
         private readonly IBus _bus;
 
 
-        public MessagingService()
+        public MessagingService(IMessagingSettings settings)
         {
-            _bus = RabbitHutch.CreateBus("host=hawk.rmq.cloudamqp.com;virtualHost=qsqurewb;username=qsqurewb;password=UyeOEGtcb6zNFOvv_c3Pi-tZoEHJHgVb");
+            _bus = RabbitHutch.CreateBus(settings.ConnectionString);
         }
 
         public void Dispose()
