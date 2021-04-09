@@ -75,21 +75,20 @@ namespace OnlineRetailer.OrderAPI.Controllers
                 if (order.OrderLines != null && order.OrderLines.Any())
                 {
                     // MARK: Fetching Customer from Customer API
-                    RestClient client = new RestClient { BaseUrl = new Uri("http://localhost:5004/customer/") };
+                    RestClient client = new RestClient { BaseUrl = new Uri("http://customerapi/customer/") };
                     var customer = GetData<Customer>(client, Method.GET, order.CustomerId);
 
                     // MARK: Fetching Product from Product API
-                    client.BaseUrl = new Uri("http://localhost:5002/product/");
+                    client.BaseUrl = new Uri("http://productapi/product/");
                     var products = GetData<List<Product>>(client, Method.GET);
 
-                    var orderedProducts = products.Where(prod =>
+                    if (customer is not null && products is not null)
                     {
-                        return Array.Exists(order.OrderLines.ToArray(), line => line.ProductId == prod.Id);
-                    }).ToList();
-
-                    if (AreProductsAvailable(order, orderedProducts))
-                    {
-                        if (customer != null)
+                        var orderedProducts = products.Where(prod =>
+                        {
+                            return Array.Exists(order.OrderLines.ToArray(), line => line.ProductId == prod.Id);
+                        }).ToList();
+                        if (AreProductsAvailable(order, orderedProducts))
                         {
 
                             decimal creditStanding = CalculateCustomerCreditStanding(customer, products);
@@ -115,14 +114,17 @@ namespace OnlineRetailer.OrderAPI.Controllers
                         }
                         else
                         {
-                            // Notify the client on missing customer
-                            return BadRequest(new { Message = "Order rejected: Customer not found" });
+                            // Notify the client on lack of products
+                            return BadRequest(new { Message = "Order rejected: Not enough products" });
                         }
+                    }
+                    else if (customer is null)
+                    {
+                        return BadRequest(new { Message = "Order rejected: Could not find customer" });
                     }
                     else
                     {
-                        // Notify the client on lack of products
-                        return BadRequest(new { Message = "Order rejected: Not enough products" });
+                        return BadRequest(new { Message = "Order rejected: Could not find products" });
                     }
                 }
                 else
