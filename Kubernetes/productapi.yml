@@ -14,8 +14,8 @@ spec:
         app: productapi
     spec:
       containers:
-      - name: productapi
-        image: leopoldus/productapi:latest
+        - name: productapi
+          image: leopoldus/productapi:latest
 ---
 apiVersion: v1
 kind: Service
@@ -27,5 +27,5 @@ spec:
   selector:
     app: productapi
   ports:
-  - port: 80
-    nodePort: 31003
+    - port: 80
+      nodePort: 31002
