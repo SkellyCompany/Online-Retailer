@@ -14,8 +14,8 @@ spec:
         app: customerapi
     spec:
       containers:
-      - name: customerapi
-        image: leopoldus/customerapi:latest
+        - name: customerapi
+          image: schemabuoi/onlineretailer.customerapi:latest
 ---
 apiVersion: v1
 kind: Service
@@ -27,5 +27,5 @@ spec:
   selector:
     app: customerapi
   ports:
-  - port: 80
-    nodePort: 31001
+    - port: 80
+      nodePort: 31004

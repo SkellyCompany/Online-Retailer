@@ -14,8 +14,8 @@ spec:
         app: orderapi
     spec:
       containers:
-      - name: orderapi
-        image: leopoldus/orderapi:latest
+        - name: orderapi
+          image: schemabuoi/onlineretailer.orderapi:latest
 ---
 apiVersion: v1
 kind: Service
@@ -27,5 +27,5 @@ spec:
   selector:
     app: orderapi
   ports:
-  - port: 80
-    nodePort: 31002
+    - port: 80
+      nodePort: 31000
