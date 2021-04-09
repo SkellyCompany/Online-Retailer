@@ -1,21 +1,21 @@
 version: "3.4"
 
 services:
-  onlineretailer.productapi:
+  onlineretailer-productapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "5002:80"
 
-  onlineretailer.orderapi:
+  onlineretailer-orderapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "5000:80"
 
-  onlineretailer.customerapi:
+  onlineretailer-customerapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80

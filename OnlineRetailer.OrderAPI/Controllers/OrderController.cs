@@ -75,11 +75,11 @@ namespace OnlineRetailer.OrderAPI.Controllers
                 if (order.OrderLines != null && order.OrderLines.Any())
                 {
                     // MARK: Fetching Customer from Customer API
-                    RestClient client = new RestClient { BaseUrl = new Uri("http://onlineretailer.customerapi/customer/") };
+                    RestClient client = new RestClient { BaseUrl = new Uri("http://onlineretailer-customerapi/customer/") };
                     var customer = GetData<Customer>(client, Method.GET, order.CustomerId);
 
                     // MARK: Fetching Product from Product API
-                    client.BaseUrl = new Uri("http://onlineretailer.productapi/product/");
+                    client.BaseUrl = new Uri("http://onlineretailer-productapi/product/");
                     var products = GetData<List<Product>>(client, Method.GET);
 
                     if (customer is not null && products is not null)

@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: customerapi
+  name: onlineretailer-customerapi
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: customerapi
+      app: onlineretailer-customerapi
   template:
     metadata:
       labels:
-        app: customerapi
+        app: onlineretailer-customerapi
     spec:
       containers:
-        - name: customerapi
-          image: schemabuoi/onlineretailer.customerapi:latest
+        - name: onlineretailer-customerapi
+          image: schemabuoi/onlineretailer-customerapi:latest
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: customerapi
+  name: onlineretailer-customerapi
   namespace: default
 spec:
   type: NodePort
   selector:
-    app: customerapi
+    app: onlineretailer-customerapi
   ports:
     - port: 80
       nodePort: 31004

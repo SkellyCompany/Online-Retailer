@@ -1,20 +1,20 @@
 version: "3.4"
 
 services:
-  onlineretailer.productapi:
-    image: ${DOCKER_REGISTRY-}onlineretailer.productapi
+  onlineretailer-productapi:
+    image: ${DOCKER_REGISTRY-}onlineretailer-productapi
     build:
       context: .
       dockerfile: OnlineRetailer.ProductAPI/Dockerfile
 
-  onlineretailer.orderapi:
-    image: ${DOCKER_REGISTRY-}onlineretailer.orderapi
+  onlineretailer-orderapi:
+    image: ${DOCKER_REGISTRY-}onlineretailer-orderapi
     build:
       context: .
       dockerfile: OnlineRetailer.OrderAPI/Dockerfile
 
-  onlineretailer.customerapi:
-    image: ${DOCKER_REGISTRY-}onlineretailer.customerapi
+  onlineretailer-customerapi:
+    image: ${DOCKER_REGISTRY-}onlineretailer-customerapi
     build:
       context: .
       dockerfile: OnlineRetailer.CustomerAPI/Dockerfile
