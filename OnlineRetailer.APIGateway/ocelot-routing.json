@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/productapi/{catchAll}",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "SwaggerKey": "productapi"
     },
     {
@@ -23,7 +23,7 @@
         }
       ],
       "UpstreamPathTemplate": "/orderapi/{catchAll}",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "SwaggerKey": "orderapi"
     },
     {
@@ -36,7 +36,7 @@
         }
       ],
       "UpstreamPathTemplate": "/customerapi/{catchAll}",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "SwaggerKey": "customerapi"
     }
   ],
