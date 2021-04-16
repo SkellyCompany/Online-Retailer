@@ -1,6 +1,12 @@
 version: "3.4"
 
 services:
+  onlineretailer-apigateway:
+    image: ${DOCKER_REGISTRY-}onlineretailer-apigateway
+    build:
+      context: .
+      dockerfile: OnlineRetailer.APIGateway/Dockerfile
+
   onlineretailer-productapi:
     image: ${DOCKER_REGISTRY-}onlineretailer-productapi
     build:

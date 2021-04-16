@@ -1,0 +1,78 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineretailer-productapi",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/productapi/{catchAll}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "SwaggerKey": "productapi"
+    },
+    {
+      "DownstreamPathTemplate": "/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineretailer-orderapi",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/orderapi/{catchAll}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "SwaggerKey": "orderapi"
+    },
+    {
+      "DownstreamPathTemplate": "/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "onlineretailer-customerapi",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/customerapi/{catchAll}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "SwaggerKey": "customerapi"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "orderapi",
+      "Config": [
+        {
+          "Name": "Order API",
+          "Version": "v1",
+          "Url": "http://onlineretailer-orderapi/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "productapi",
+      "Config": [
+        {
+          "Name": "Product API",
+          "Version": "v1",
+          "Url": "http://onlineretailer-productapi/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "customerapi",
+      "Config": [
+        {
+          "Name": "Customer API",
+          "Version": "v1",
+          "Url": "http://onlineretailer-customerapi/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://online-apigateway"
+  }
+}
