@@ -73,6 +73,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://online-apigateway"
+    "BaseUrl": "http://localhost:5000"
   }
 }

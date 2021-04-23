@@ -12,7 +12,7 @@ using OnlineRetailer.ProductAPI.Core.DomainServices;
 using OnlineRetailer.ProductAPI.Core.Messaging.Receivers;
 using OnlineRetailer.ProductAPI.Infrastructure.Database;
 using OnlineRetailer.ProductAPI.Infrastructure.Repositories;
-using System.Threading.Tasks;
+using Prometheus;
 
 namespace OnlineRetailer.ProductAPI
 {
@@ -83,10 +83,14 @@ namespace OnlineRetailer.ProductAPI
 
             app.UseRouting();
 
+            app.UseHttpMetrics();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapMetrics();
+
                 endpoints.MapControllers();
             });
 

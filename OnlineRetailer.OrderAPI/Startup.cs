@@ -12,6 +12,7 @@ using OnlineRetailer.OrderAPI.Core.ApplicationServices.Services;
 using OnlineRetailer.OrderAPI.Core.DomainServices;
 using OnlineRetailer.OrderAPI.Infrastructure.Database;
 using OnlineRetailer.OrderAPI.Infrastructure.Repositories;
+using Prometheus;
 
 namespace OnlineRetailer.OrderAPI
 {
@@ -86,10 +87,14 @@ namespace OnlineRetailer.OrderAPI
 
             app.UseRouting();
 
+            app.UseHttpMetrics();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapMetrics();
+
                 endpoints.MapControllers();
             });
 

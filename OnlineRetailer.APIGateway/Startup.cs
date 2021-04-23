@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Ocelot.Middleware;
 using Ocelot.DependencyInjection;
+using Prometheus;
 
 namespace OnlineRetailer.APIGateway
 {
@@ -41,8 +42,12 @@ namespace OnlineRetailer.APIGateway
             }
             app.UseRouting();
 
+            app.UseHttpMetrics();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapMetrics();
+
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
